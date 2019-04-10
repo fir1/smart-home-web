@@ -1,0 +1,204 @@
+<%- include('includes/head.ejs') %>
+</head>
+
+<body class="menu-on-left">
+  <div class="wrapper">
+    <div class="sidebar" data-color="azure" data-background-color="white" data-image="/img/sidebar-1.jpg">
+
+      <%- include('includes/navigationSidebar.ejs') %>
+
+      <div class="main-panel">
+        <!-- Navbar Top -->
+        <%- include('includes/navigationTop.ejs') %>
+
+        <div class="content">
+          <div class="container-fluid">
+            <div class="row">
+
+              <!--The below is for card body and desing of the Lights Card-->
+              <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="card card-stats">
+                  <div class="card-header card-header-warning card-header-icon">
+                    <div class="card-icon">
+                      <i class="material-icons">lightbulb_outline</i>
+                    </div>
+                    <h3 class="card-title">Lights
+                    </h3>
+                  </div>
+                  <hr>
+
+                  <% if (dev.length > 0) { %>
+                  <% for (let device of dev) { %>
+                  <% if (device.typeDevice == "light") { %>
+                  <ul class="list-group">
+                    <li class="list-group-item">
+                      <h5><b>
+                          <center><%= device.name %> - <%= device.state %> </center>
+                        </b></h5>
+                    </li>
+                  </ul>
+                  <% } %>
+                  <% } %>
+                  <% } %>
+                </div>
+              </div>
+
+              <!--The below is for card body and desing of the Plugs Card-->
+              <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="card card-stats">
+                  <div class="card-header card-header-success card-header-icon">
+                    <div class="card-icon">
+                      <i class="material-icons">power</i>
+                    </div>
+                    <h3 class="card-title">Plugs
+                    </h3>
+                  </div>
+                  <hr>
+
+                  <% if (dev.length > 0) { %>
+                  <% for (let device of dev) { %>
+                  <% if (device.typeDevice == "plug") { %>
+                  <ul class="list-group">
+                    <li class="list-group-item">
+                      <h5><b>
+                          <center><%= device.name %> - <%= device.state %> </center>
+                        </b></h5>
+                    </li>
+                  </ul>
+                  <% } %>
+                  <% } %>
+                  <% } %>
+                </div>
+              </div>
+
+              <!--The below is for card body and desing of the Doors Card-->
+              <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="card card-stats">
+                  <div class="card-header card-header-danger card-header-icon">
+                    <div class="card-icon">
+                      <i class="material-icons">home</i>
+                    </div>
+                    <h3 class="card-title">Doors
+                    </h3>
+                  </div>
+                  <hr>
+
+                  <% if (dev.length > 0) { %>
+                  <% for (let device of dev) { %>
+                  <% if (device.typeDevice == "door") { %>
+                  <ul class="list-group">
+                    <li class="list-group-item">
+                      <h5><b>
+                          <center><%= device.name %> - <%= device.state === 'On' ? 'Open' : 'Close' %> </center>
+                        </b></h5>
+                    </li>
+                  </ul>
+                  <% } %>
+                  <% } %>
+                  <% } %>
+                </div>
+              </div>
+
+              <!--The below is for card body and desing of the Air Conditioner Card-->
+              <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="card card-stats">
+                  <div class="card-header card-header-info card-header-icon">
+                    <div class="card-icon">
+                      <i class="material-icons">toys</i>
+                    </div>
+                    <h3 class="card-title">AC
+                    </h3>
+                  </div>
+                  <hr>
+
+                  <% if (dev.length > 0) { %>
+                  <% for (let device of dev) { %>
+                  <% if (device.typeDevice == "ac") { %>
+                  <ul class="list-group">
+                    <li class="list-group-item">
+                      <h5><b>
+                          <center><%= device.name %> - <%= device.state %> </center>
+                        </b></h5>
+                    </li>
+                  </ul>
+                  <% } %>
+                  <% } %>
+                  <% } %>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12">
+                <div class="card card-chart">
+                  <canvas id="myChart" id="bar-chart" width="800" height="450"></canvas>
+                  <div class="card-footer">
+                    <div class="stats">
+                      <i class="material-icons">access_time</i> updated 4 minutes ago
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <hr>
+            </div>
+          </div>
+
+          <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
+          <script src="/js/material-dashboard.js?v=2.1.1" type="text/javascript"></script>
+          <script src="/js/core/material.js" type="text/javascript"></script>
+
+          <!--The below script used in order to show the Chart Temperatures-->
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
+
+          <script>
+            //The below script is for displaying the chart.
+            let ctx = document.querySelector('#myChart').getContext('2d');
+
+            let myChart = new Chart(ctx, {
+              type: 'bar',
+              data: {
+                labels: ["12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00"],
+                datasets: [{
+                  label: '#',
+                  data: [<%= thermo %>],
+                  backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                  ],
+                  borderColor: [
+                    'rgba(255,99,132,1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                  ],
+                  borderWidth: 1
+                }]
+              },
+              options: {
+                scales: {
+                  yAxes: [{
+                    ticks: {
+                      beginAtZero: true
+                    }
+                  }]
+                },
+                title: {
+                  display: true,
+                  text: 'Temperature of the room',
+                  fontSize: 18
+                }
+              }
+            }); // end chart obj
+          </script>
+
+          <!--The below script will be used in order to validate and send POST request from front end to the back end-->
+          <script src="/js/admin.js"></script>
+</body>
+
+</html>

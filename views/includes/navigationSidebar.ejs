@@ -1,0 +1,61 @@
+<div class="logo">
+
+  <a class="simple-text logo-normal">
+    <img src="/img/favicon.ico" alt="SmartHomeIcon" height="30px">
+    <h4><b>Smart Home</b></h4>
+  </a>
+</div>
+
+<div class="sidebar-wrapper">
+  <ul class="nav">
+    <li class="nav-item <%= path === '/overview' ? 'active' : '' %>">
+      <a class="nav-link" href="/overview">
+        <i class="material-icons">dashboard</i>
+        <p>OVERVIEW</p>
+      </a>
+    </li>
+
+    <li class="nav-item <%= path === '/lights' ? 'active' : '' %>">
+      <a class="nav-link" href="/lights">
+        <i class="material-icons">lightbulb_outline</i>
+        <p>LIGHTS</p>
+      </a>
+    </li>
+    <li class="nav-item <%= path === '/plug' ? 'active' : '' %>">
+      <a class="nav-link" href="/plug">
+        <i class="material-icons">power</i>
+        <p>PLUG</p>
+      </a>
+    </li>
+    <li class="nav-item <%= path === '/door' ? 'active' : '' %>">
+      <a class="nav-link" href="/door">
+        <i class="material-icons">home</i>
+        <p>DOOR</p>
+      </a>
+    </li>
+    <li class="nav-item <%= path === '/airconditioner' ? 'active' : '' %>">
+      <a class="nav-link" href="/airconditioner">
+        <i class="material-icons">toys</i>
+        <p>AIR CONDITIONER</p>
+      </a>
+    </li>
+    <li class="nav-item <%= path === '/controlPanel' ? 'active' : '' %>">
+      <a class="nav-link" href="/controlPanel">
+        <i class="material-icons">settings</i>
+        <p>CONTROL PANEL</p>
+      </a>
+    </li>
+
+    <form>
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+      <!-- <li class="nav-item <%= path === '/logout' ? 'active' : '' %>"> -->
+      <li>
+        <a class="nav-link" href="#" onclick="postLogOut()">
+          <i class="material-icons">lock</i>
+          <p>LOG OUT</p>
+        </a>
+      </li>
+    </form>
+  </ul>
+</div>
+</div>

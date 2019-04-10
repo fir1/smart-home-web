@@ -1,0 +1,113 @@
+<%- include('includes/head.ejs') %>
+</head>
+
+<body class="menu-on-left">
+  <div class="wrapper ">
+    <div class="sidebar" data-color="azure" data-background-color="white" data-image="/img/sidebar-1.jpg">
+
+      <%- include('includes/navigationSidebar.ejs') %>
+
+      <div class="main-panel">
+        <!-- Navbar Top-->
+        <%- include('includes/navigationTop.ejs') %>
+
+        <div class="content">
+          <input type="hidden" value="door" name="typeDevice">
+          <% if (dev.length > 0) { %>
+          <% for (let device of dev) { %>
+          <div class="col-lg-10 col-md col-sm-6 m-auto" id="<%= device._id %>">
+            <div class="card card-stats">
+              <div class="card-header card-header-danger card-header-icon">
+                <div class="card-icon">
+                  <i class="material-icons">home</i>
+                </div>
+
+                <h3 class="card-title">Door
+                  <small><%= device.name %></small>
+                </h3>
+                <hr>
+
+                <!--Device state change toggle button-->
+                <div class="selected">
+                    <input type="hidden" value="door" name="typeDevice">
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>" id="he">
+                  <input type="hidden" value="<%= device._id %>" name="deviceId">
+                  <input onchange="stateChange(this)" id="chkall" name="toggleButton" type="checkbox"
+                    data-toggle="toggle" <%= device.state === 'On' ? 'checked' : '' %>>
+                </div>
+
+                <!--Setting timer DIV block-->
+                <div class="card card-stats mt-0 bg-info pt-2">
+                  <div class="card-header card-header-danger card-header-icon">
+                    <div class="card-icon">
+                      <i class="material-icons">access_time</i>
+                    </div>
+                    <div>
+                      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                      <input type="hidden" value="<%= device._id %>" name="deviceId">
+                      <input type="hidden" value="<%= device.name %>" name="deviceName">
+
+                      <input type="text" class="basicDate" data-input
+                        value="<%= moment(device.startTime).isValid() === true ? moment(device.startTime).format() : '' %>"
+                        name="startTime"> From </input>
+
+                      <input type="text" class="basicDate" data-input
+                        value="<%= moment(device.finishTime).isValid() === true ? moment(device.finishTime).format() : '' %>"
+                        name="finishTime" style="margin-left: 40px;background-position: 20px;"> To </input>
+                      <button type="submit" onclick="setTime(this)"" class=" btn btn-success">Set time</button>
+                    </div>
+                  </div>
+                </div>
+                <div id="errorMessage_<%= device._id %>"></div>
+              </div>
+
+              <!--Delete Device DIV block-->
+              <div class="m-auto">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <input type="hidden" value="<%= device._id %>" name="deviceId">
+                <button type="button" class="btn btn-danger" onclick="deleteDevice(this)">Delete</button>
+              </div>
+            </div>
+          </div>
+          <% } %>
+          <% } else { %>
+          <h1>No Devices Found!</h1>
+          <% } %>
+
+          <!--Add Device DIV block-->
+          <div class="card m-auto bg- bg-light" style="width: 13rem;">
+            <div class="card-body">
+              <div class="ml-2">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <div id="errorMessage"></div>
+                <label for="title">Name of Device:</label>
+                <input type="text" name="deviceNameCheck">
+                <button class="btn" type="submit" onclick="addDevice(this)">Add Device</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
+  <script src="/js/material-dashboard.js?v=2.1.1" type="text/javascript"></script>
+  <script src="/js/core/material.js" type="text/javascript"></script>
+
+  <script>
+     /*The below is used for calendar and time graphics*/
+    $(document).ready(function () {
+      $(".basicDate").flatpickr({
+        minDate: "today",
+        enableTime: true,
+        time_24hr: true,
+        dateFormat: "Y-m-d H:i"
+      });
+    });
+  </script>
+  <!--The below script will be used in order to validate and send POST request from front end to the back end-->
+  <script src="/js/admin.js"></script>
+</body>
+</html>

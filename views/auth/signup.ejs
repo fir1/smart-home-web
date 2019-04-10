@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Sign Up</title>
+    <!-- Font Icon -->
+    <link rel="stylesheet" href="/signup/fonts/material-icon/css/material-design-iconic-font.min.css">
+    <link rel="stylesheet" media="screen"
+        href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" />
+    <!-- Main css -->
+    <link rel="stylesheet" href="/signup/css/style.css">
+    <link rel="stylesheet" href="/css/errorMessages.css">
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+</head>
+
+<body>
+
+    <div class="main">
+
+        <!-- Sign up form -->
+        <section class="signup">
+            <div class="container">
+                <div class="signup-content">
+                    <div class="signup-form">
+                        <h2 class="form-title">Sign up</h2>
+                        <% if (errorMessage) {%>
+                        <div class="user-message user-message--error"><%= errorMessage %></div>
+                        <% } %>
+                        <form class="register-form" id="register-form" method="POST" action="/signup"
+                            onsubmit="return validateSignUpForm()">
+                            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                            <div class="form-group">
+                                <label for="name"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                                <input type="text" name="userName" id="name" placeholder="Your Name" />
+                            </div>
+                            <div class="form-group">
+                                <label for="name"><i class="zmdi zmdi-smartphone-setup material-icons-name"></i></label>
+                                <input type="text" name="serialPi" id="serialPi" placeholder="Serial Number of PI" />
+                            </div>
+                            <div class="form-group">
+                                <label for="email"><i class="zmdi zmdi-email"></i></label>
+                                <input type="email" name="email" id="email" placeholder="Your Email" />
+                            </div>
+                            <div class="form-group">
+                                <label for="pass"><i class="zmdi zmdi-lock"></i></label>
+                                <input type="password" name="password" id="password" placeholder="Password" />
+                                <span class="pwstrength_viewport_verdict" id="strength"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="re-pass"><i class="zmdi zmdi-lock-outline"></i></label>
+                                <input type="password" name="re_pass" id="re_pass" placeholder="Confirm password" />
+                            </div>
+                            <div id="errorMessage"></div>
+                            <div class="g-recaptcha" data-sitekey="6LeT85gUAAAAAHtu_hUPzSTA99yE7jpKvieKGRV1"></div>
+                            <div class="form-group form-button">
+                                <input type="submit" name="signup" id="signup" class="form-submit" value="Register" />
+                            </div>
+                        </form>
+                    </div>
+                    <div class="signup-image">
+                        <figure><img src="/signup/images/signup-image.jpg" alt="sing up image"></figure>
+                        <h5>Note:</h5>
+                        <p>Please confirm received email to complete registration.</p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+
+
+    </div>
+
+    <!-- JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/plugins/pwstrength-bootstrap.min.js"></script>
+    <script type="text/javascript">
+        jQuery(document).ready(function () {
+            "use strict";
+            var options = {};
+            options.ui = {
+                container: "#pwd-container",
+                showStatus: true,
+                showProgressBar: true,
+                viewports: {
+                    verdict: ".pwstrength_viewport_verdict"
+                }
+            };
+
+            $(':password').pwstrength(options);
+
+        });
+    </script>
+    <script type="text/javascript" src="/js/validationForms.js"></script>
+    <script src="/signup/js/main.js"></script>
+</body><!-- This templates was made by Colorlib (https://colorlib.com) -->
+
+</html>
