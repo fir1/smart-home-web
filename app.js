@@ -18,6 +18,8 @@ const MONGODB_URI =
 
 const app = express();
 
+const PORT = process.env.PORT || 5000;
+
 const store = new MongoDBStore({
   uri: MONGODB_URI,
   collection: 'sessions'
@@ -118,7 +120,7 @@ mongoose
     // app.listen(3000,'0.0.0.0'); //'0.0.0.0' means you can connect to website from any device which is connected to the same router 
     //                             // if you want to access it be sure that you will access by knowing IP address of laptop ipconfig in command prompt
     //                             //also change all the POST requests link from light.ejs and etc.
-    app.listen(3000);
+    app.listen(PORT);
   })
   .catch(err => {
     console.log(err);
