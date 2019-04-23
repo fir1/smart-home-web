@@ -173,12 +173,12 @@ exports.postSignup = (req, res, next) => {
        //if it is on here which means the data saved in database
        res.redirect('/login');
        transporter.sendMail({    
-        to: req.email,          //the user's email which was found from DB the one who did request for password Reset 
+        to: email,          //the user's email which was found from DB the one who did request for password Reset 
         from: 'myhome@smart.com',
         subject: 'Confirm Your Email',
         html: `
               <p>You have registered.</p>
-              <p>Click this <a href="http://localhost:3000/confirmEmail/${token}">link</a> in order to confirm your email</p>
+              <p>Click this <a href="https://smart-homes.me/confirmEmail/${token}">link</a> in order to confirm your email</p>
               <p>Note: This link will expiry in 1:30 hour.</p>
         `
                                                                           //${} will able to inject variables and values inside of {}
@@ -246,7 +246,7 @@ exports.postEmailConfirmation = (req,res,next) =>{
     subject: 'Email Address Confirmed',
     html: `
           <p>You have confirmed your email address.</p>
-          <p>Click this <a href="http://localhost:3000/login">link</a> in order to use the admin dashboard. Thank
+          <p>Click this <a href="https://smart-homes.me/login">link</a> in order to use the admin dashboard. Thank
           you for using our services.</p>
     ` 
 }); 
@@ -328,7 +328,7 @@ exports.postResetPassword = (req,res,next) => {
         subject: 'Request of Password Reset',
         html: `
               <p>You have requested a password reset</p>
-              <p>Click this <a href="http://localhost:3000/newPassword/${token}">link</a> in order to reset a new password</p>
+              <p>Click this <a href="https://smart-homes.me/newPassword/${token}">link</a> in order to reset a new password</p>
               <p>Note: This link will expiry in 1:30 hour.</p>
         `
                                                                           //${} will able to inject variables and values inside of {}
