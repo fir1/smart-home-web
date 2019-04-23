@@ -18,7 +18,6 @@ const transporter = nodemailer.createTransport(sendGrid({      //nodemailer will
  }
 })); 
 
-
 exports.getLogin = (req, res, next) => {
   let messageError = req.flash('error'); //the error is the key whatever stored in the key error will be shown in here
   if(messageError.length > 0){
