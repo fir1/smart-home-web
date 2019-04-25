@@ -1,16 +1,9 @@
 const bcrypt = require('bcryptjs');
 const crypto = require ('crypto');
-
 const User = require('../models/user');
-
 const nodemailer = require('nodemailer');
 const sendGrid = require ('nodemailer-sendgrid-transport') //sendgrid is the 3rd party package,  in order to send emails to users
-
 const request = require('request');
-const requestIp = require('request-ip');
-
- // create a file only file logger
-const log = require('simple-node-logger').createSimpleFileLogger('loginfailed.log');
 
 const transporter = nodemailer.createTransport(sendGrid({      //nodemailer will use the service of sendgrid to send emails
  auth:{
@@ -33,8 +26,96 @@ exports.getLogin = (req, res, next) => {
   });
 };
 
- 
+exports.getSignup = (req, res, next) => {
+  let messageError = req.flash('error'); //the error is the key whatever stored in the key error will be shown in here
+  if(messageError.length > 0){
+    messageError=messageError[0];
+  }
+  else{
+    messageError=null;
+  }
+  res.render('auth/signup', {
+    path: '/signup',
+    pageTitle: 'Signup',
+    errorMessage: messageError
+  });
+}; 
 
+
+exports.getEmailConfirmation = (req,res,next) =>{
+
+  const token = req.params.token; //req.params.token means you extracting the token from the URL
+  User.findOne({
+    emailConfirmationToken: token, emailConfirmationExpiration: {$gt: Date.now()}
+  })
+  .then(user =>{
+    let messageError = req.flash('error'); //the error is the key whatever stored in the key error will be shown in here
+  if(messageError.length > 0){
+    messageError=messageError[0];
+  }
+  else{
+    messageError=null;
+  }
+
+  res.render('auth/confirmEmail', {
+    path: '/confirmEmail',
+    pageTitle: 'Confirm Email',
+    errorMessage: messageError,
+    userId: user._id.toString(),                      //userId required in order to include to the POST request where the password will be updated
+    emailConfirmationToken: token
+  })
+  })
+  .catch(err=>{
+    console.log(err);
+  })
+};
+
+
+exports.getResetPassword = (req,res,next) => {
+  let messageError = req.flash('error'); //the error is the key whatever stored in the key error will be shown in here
+  if(messageError.length > 0){
+    messageError=messageError[0];
+  }
+  else{
+    messageError=null;
+  }
+  res.render('auth/passwordReset', {
+    path: '/passwordReset',
+    pageTitle: 'Reset Password',
+    errorMessage: messageError
+  });
+};
+
+
+exports.getNewPassword = (req,res,next) =>{
+
+  const token = req.params.token; //req.params.token means you extracting the token from the URL
+  User.findOne({
+    resetPasswordToken: token, resetPasswordExpiration: {$gt: Date.now()}
+  })
+  .then(user =>{
+    let messageError = req.flash('error'); //the error is the key whatever stored in the key error will be shown in here
+  if(messageError.length > 0){
+    messageError=messageError[0];
+  }
+  else{
+    messageError=null;
+  }
+
+  res.render('auth/newPassword', {    //whatever responded property will be available in the front end to use, such as, pageTitle and userId will be rendered in the front end
+    path: '/newPassword',
+    pageTitle: 'New Password',
+    errorMessage: messageError,
+    userId: user._id.toString(),                      //userId required in order to include to the POST request where the password will be updated
+    passwordToken: token
+  });
+  })
+  .catch(err=>{
+    console.log(err);
+  })
+};
+
+ 
 exports.postLogin = (req, res, next) => { 
   const email = req.body.email;
   const password = req.body.password;
@@ -62,7 +143,6 @@ exports.postLogin = (req, res, next) => {
     .then(user => {
       if (!user) {
         req.flash('error','Invalid email or password.');
-        log.info('login failed', " Email:",email," Password:",password, " IP:",clientIp," at ",new Date().toJSON());//it will save failed logins to the log file
         //if the email does not exist in database then redirect to the login page
         return res.redirect('/login');
      //   return  res.status(200).json({"link": "/login","success": true, "msg":"Passed captcha verification"});
@@ -81,42 +161,20 @@ exports.postLogin = (req, res, next) => {
           }
           
           req.flash('error','Invalid email or password.');
-          log.info('login failed', " Email:",email," Password:",password, " IP:",clientIp," at ",new Date().toJSON());//it will save failed logins to the log file
           return res.redirect('/login');
         //  return  res.status(200).json({"link": "/login","success": false, "msg":"Passed captcha verification"});
         })
     })
- 
   });
- 
   };
 
 
-  exports.getSignup = (req, res, next) => {
-    let messageError = req.flash('error'); //the error is the key whatever stored in the key error will be shown in here
-    if(messageError.length > 0){
-      messageError=messageError[0];
-    }
-    else{
-      messageError=null;
-    }
-    res.render('auth/signup', {
-      path: '/signup',
-      pageTitle: 'Signup',
-      errorMessage: messageError
-    });
-  }; 
-
 exports.postSignup = (req, res, next) => { 
-
   
   const userName = req.body.userName;
   const serialPi = req.body.serialPi;
   const email = req.body.email;
   const password = req.body.password;
-
-
-
   const captcha = req.body['g-recaptcha-response']; //recaptcha values from the front end will be retrieved
 
   // Secret Key
@@ -135,8 +193,6 @@ exports.postSignup = (req, res, next) => {
     //  return  res.status(200).json({"success": false, "msg":"Failed captcha verification","link": "/login"});
       return res.redirect('/signup');
   }
-
-
 
   crypto.randomBytes(32, (err,buffer)=>{
     if(err){
@@ -184,46 +240,10 @@ exports.postSignup = (req, res, next) => {
     .catch(err=>{
       console.log(err);
     })
-
 })
-
 });
-
-
 };
  
-
-exports.getEmailConfirmation = (req,res,next) =>{
-
-  const token = req.params.token; //req.params.token means you extracting the token from the URL
-  User.findOne({
-    emailConfirmationToken: token, emailConfirmationExpiration: {$gt: Date.now()}
-  })
-  .then(user =>{
-    let messageError = req.flash('error'); //the error is the key whatever stored in the key error will be shown in here
-  if(messageError.length > 0){
-    messageError=messageError[0];
-  }
-  else{
-    messageError=null;
-  }
-
-  res.render('auth/confirmEmail', {
-    path: '/confirmEmail',
-    pageTitle: 'Confirm Email',
-    errorMessage: messageError,
-    userId: user._id.toString(),                      //userId required in order to include to the POST request where the password will be updated
-    emailConfirmationToken: token
-  })
- 
-  })
-  .catch(err=>{
-    console.log(err);
-  })
-};
-
-
-
 
 exports.postEmailConfirmation = (req,res,next) =>{
  
@@ -257,23 +277,6 @@ exports.postEmailConfirmation = (req,res,next) =>{
     console.log(err);
   })
   };
-
-
-
-exports.getResetPassword = (req,res,next) => {
-  let messageError = req.flash('error'); //the error is the key whatever stored in the key error will be shown in here
-  if(messageError.length > 0){
-    messageError=messageError[0];
-  }
-  else{
-    messageError=null;
-  }
-  res.render('auth/passwordReset', {
-    path: '/passwordReset',
-    pageTitle: 'Reset Password',
-    errorMessage: messageError
-  });
-};
 
 
 exports.postResetPassword = (req,res,next) => {
@@ -329,47 +332,14 @@ exports.postResetPassword = (req,res,next) => {
         `
                                                                           //${} will able to inject variables and values inside of {}
     }); 
-
     })
     .catch(err=>{
       console.log(err);
     })
-
 })
-
-
 });
-
 };
 
-
-exports.getNewPassword = (req,res,next) =>{
-
-  const token = req.params.token; //req.params.token means you extracting the token from the URL
-  User.findOne({
-    resetPasswordToken: token, resetPasswordExpiration: {$gt: Date.now()}
-  })
-  .then(user =>{
-    let messageError = req.flash('error'); //the error is the key whatever stored in the key error will be shown in here
-  if(messageError.length > 0){
-    messageError=messageError[0];
-  }
-  else{
-    messageError=null;
-  }
-
-  res.render('auth/newPassword', {    //whatever responded property will be available in the front end to use, such as, pageTitle and userId will be rendered in the front end
-    path: '/newPassword',
-    pageTitle: 'New Password',
-    errorMessage: messageError,
-    userId: user._id.toString(),                      //userId required in order to include to the POST request where the password will be updated
-    passwordToken: token
-  });
-  })
-  .catch(err=>{
-    console.log(err);
-  })
-};
 
 exports.postNewPassword = (req,res,next) =>{
 const newPassword = req.body.password //the link which is calling postNewPassword will have inside of HTML  <input name="password">
@@ -395,8 +365,6 @@ User.findOne({resetPasswordToken: passwordToken, resetPasswordExpiration: {$gt: 
 .catch(err=>{
   console.log(err);
 })
-
-
 };
 
 

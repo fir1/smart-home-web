@@ -12,11 +12,19 @@ const Device = require('./models/device');
 var moment = require('moment-timezone');
 const authRoutes = require('./routes/authentication');
 const adminRoutes = require('./routes/admin');
+const enforce = require('express-sslify');
 
 const MONGODB_URI =
   'mongodb+srv://firdavs:Modarjon2112@smarthome-ogiob.mongodb.net/device?retryWrites=true';
 
 const app = express();
+
+/*The below middleware will be used in order to REDIRECT all the HTTP requests to the HTTPS encrypted connection
+While testing the application locally please do comment them out, otherwise the application will not run locally
+This is required for the production purposes.
+*/
+enforce.HTTPS({ trustProtoHeader: true })
+app.use(enforce.HTTPS());
 
 const PORT = process.env.PORT || 5000;
 

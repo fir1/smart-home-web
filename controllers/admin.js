@@ -16,27 +16,13 @@ const transporter = nodemailer.createTransport(sendGrid({      //nodemailer will
 
 
 exports.getOverview = (req, res, next) => {
-
-  let thermo = [];
   const userId = req.user;
   const serialNumber = req.serialNumber;
 
-
-  
-   
- 
-  
- 
-
-  var query = {
-    userId
-  };
-  Device.find(query)
+  Device.find({userId})
     .then(devices => {
       Temp.find({serialNumber: serialNumber})
-  .then(resultTemp=>{
-    
- 
+  .then(resultTemp=>{ 
       res.render('overview', {
         dev: devices,
         path: '/overview',
@@ -276,12 +262,11 @@ exports.postStateChangeAll = (req, res, next) => {
 };
 
 
-exports.postUpdateProfile = (req, res, next) => {
+exports.postUpdateUsername = (req, res, next) => {
 
   const userId = req.user;
   const username = req.body.username;
 
-  
   var query = {
     _id: userId
   };
@@ -305,33 +290,23 @@ exports.postUpdatePassword = (req, res, next) => {
 
   const userId = req.user;
   const password = req.body.password;
-  const newPassword = req.body.newPassword;
-   
+  const newPassword = req.body.newPassword; 
   var email="";
-  
-  var query = {
-    _id: userId
-  };
-  var update = {
-    password: newPassword
-  };
+
     crypto.randomBytes(32, (err,buffer)=>{
       if(err){
         console.log(err);
         return redirect('/controlPanel')
       }
 
-
-
       const token = buffer.toString('hex'); //buffer will store hexadecimal values thats why we need to convert it to the String
-      User.findOne({_id: userId})   //the email of the user will be pulled from the request body
+      User.findOne({_id: userId})   //the id of the user which is logged in will be verified with database
       .then(user => {
-        
+
         bcrypt
         .compare(password, user.password) //the encrypted password from database will be checked with the password that user entered it will return true or false
         .then(doMatch => {
           if (doMatch) {
-           
           return bcrypt
           .hash(newPassword, 12) //encrypt the given password with the highest hash encryption level 12
           .then(hashedPassword => {
@@ -371,9 +346,7 @@ exports.postUpdatePassword = (req, res, next) => {
       .catch(err=>{
         console.log(err);
       })
-  
   })
-
 };
 
 
