@@ -1,5 +1,5 @@
 {
-  "name": "Smart Home System",
+  "name": "SmartHomeSystem",
   "version": "1.0.0",
   "description": "The Smart Home web application to controll the home appliances",
   "main": "app.js",
@@ -12,6 +12,7 @@
     "url": ""
   },
   "author": "Firdavs Kasymov",
+  "license": "MIT",
   "bugs": {
     "url": ""
   },
