@@ -1,6 +1,6 @@
 {
   "name": "Start on Heroku: Node.js",
-  "description": "A simple chat Application using Express and socket.io",
+  "description": "A Smart Home System",
   "repository": "",
   "logo": "",
   "keywords": ["node", "express", "heroku"],

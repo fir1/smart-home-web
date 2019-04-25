@@ -1,7 +1,7 @@
 {
-  "name": "simplechatapp",
+  "name": "Smart Home System",
   "version": "1.0.0",
-  "description": "Simple chat app built with node.js and socket.io",
+  "description": "The Smart Home web application to controll the home appliances",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -9,14 +9,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ngrt/simpleChatApp.git"
+    "url": ""
   },
-  "author": "Noufel Gouirhate",
-  "license": "ISC",
+  "author": "Firdavs Kasymov",
   "bugs": {
-    "url": "https://github.com/ngrt/simpleChatApp/issues"
+    "url": ""
   },
-  "homepage": "https://github.com/ngrt/simpleChatApp#readme",
+  "homepage": "",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "connect-flash": "^0.1.1",
@@ -27,15 +26,13 @@
     "eonasdan-bootstrap-datetimepicker": "^4.17.47",
     "express": "^4.16.2",
     "express-session": "^1.15.6",
-    "express-sslify": "^1.2.0",
+    "heroku-ssl-redirect": "0.0.4",
     "moment": "^2.24.0",
     "moment-timezone": "^0.5.23",
     "mongodb": "^3.1.13",
     "mongoose": "^5.4.16",
     "nodemailer": "^5.1.1",
     "nodemailer-sendgrid-transport": "^0.2.0",
-    "recaptcha2": "^1.3.3",
-    "request-ip": "^2.1.3",
-    "simple-node-logger": "^18.12.22"
+    "recaptcha2": "^1.3.3"
   }
 }
