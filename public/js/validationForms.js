@@ -85,6 +85,24 @@ const validateUpdatePassword = () =>{
     return true;
 }
 
+const validateResetPassword = () => {
+    const newPassword = $('#password').val();
+    const confirmPassword = $('#re_pass').val();
+
+    $(".message").remove(); //this required to clear error messages so new errors will show up
+
+    if (checkPassword(newPassword, "", "") === false) {
+     return false;
+    }  
+
+    if ((newPassword !== confirmPassword)) {
+        $('#errorMessage').addClass("user-message user-message--error");
+        $('#errorMessage').append('<p class="message">New Passwords do not match!</p>').show();
+        return false;
+    }
+    return true;
+}
+
 
 /*The below function will display error to the user, so they know what kind of password to put in order to make
 it strong. The valid password will be considered if it has 1 one of each:

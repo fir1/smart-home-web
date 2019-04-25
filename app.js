@@ -25,6 +25,9 @@ This is required for the production purposes.
 */
  // enable ssl redirect 
 app.use(sslRedirect());
+// app.use(sslRedirect([
+//   'development'
+//   ]));
 
 const PORT = process.env.PORT || 5000;
 
