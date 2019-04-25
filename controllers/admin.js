@@ -1,37 +1,51 @@
 const Device = require('../models/device');
 const User = require('../models/user');
+const Temp = require('../models/temperature');
 var moment = require('moment');
-
+const bcrypt = require('bcryptjs');
 const nodemailer = require('nodemailer');
 const sendGrid = require ('nodemailer-sendgrid-transport') //sendgrid is the 3rd party package,  in order to send emails to users
 
 
 const transporter = nodemailer.createTransport(sendGrid({      //nodemailer will use the service of sendgrid to send emails
   auth:{
-    api_key: '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'
+    api_key: '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'
   }
  })); 
 
 
 exports.getOverview = (req, res, next) => {
 
-  let thermo = [30, 20, -5, 90];
+  let thermo = [];
   const userId = req.user;
+  const serialNumber = req.serialNumber;
+
+
+  
+   
+ 
+  
+ 
 
   var query = {
     userId
   };
   Device.find(query)
     .then(devices => {
+      Temp.find({serialNumber: serialNumber})
+  .then(resultTemp=>{
+    
+ 
       res.render('overview', {
         dev: devices,
         path: '/overview',
         activeButton: "checked",
-        thermo: thermo,
+        thermo: resultTemp,
         moment: moment,
         username: req.username //the req.username is the username of the person which is authenticated to use the system
       });
     })
+  }); 
 };
 
 

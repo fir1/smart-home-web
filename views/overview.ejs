@@ -134,6 +134,20 @@
                   <canvas id="myChart" id="bar-chart" width="800" height="450"></canvas>
                   <div class="card-footer">
                     <div class="stats">
+                      <i class="material-icons">access_time</i> updated 1 hourly
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <hr>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12">
+                <div class="card card-chart">
+                  <canvas id="myChartHumidity" id="bar-chart" width="800" height="450"></canvas>
+                  <div class="card-footer">
+                    <div class="stats">
                       <i class="material-icons">access_time</i> updated 4 minutes ago
                     </div>
                   </div>
@@ -153,29 +167,82 @@
           <script>
             //The below script is for displaying the chart.
             let ctx = document.querySelector('#myChart').getContext('2d');
+            let ctxHumidity = document.querySelector('#myChartHumidity').getContext('2d');
 
             let myChart = new Chart(ctx, {
               type: 'bar',
               data: {
-                labels: ["12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00"],
+                labels: [ 
+                <% if (thermo.length > 0) { %>
+                  <% for (let temp of thermo) { %>
+                    <% if (moment(temp.date).format('DD/MM/YY')==moment().format('DD/MM/YY')) { %>
+                      "<%= moment(temp.date).format('HH:mm')  %>",
+                      <% } %>
+                  <% } %>
+                  <% } %>
+              ],
                 datasets: [{
                   label: '#',
-                  data: [<%= thermo %>],
+                  data: [
+                  <% if (thermo.length > 0) { %>
+                  <% for (let temp of thermo) { %>
+                      <%= temp.temperature %>,
+                     
+                  <% } %>
+                  <% } %>
+                ],
                   backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
+                  'rgba(54, 162, 235, 0.2)',
                     'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(255, 159, 64, 0.2)'
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                     
                   ],
                   borderColor: [
-                    'rgba(255,99,132,1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(153, 102, 255, 1)',
-                    'rgba(255, 159, 64, 1)'
+                  'rgba(54, 162, 235, 1)',
+                  'rgba(54, 162, 235, 1)',
+                  'rgba(54, 162, 235, 1)',
+                  'rgba(54, 162, 235, 1)',
+                  'rgba(54, 162, 235, 1)',
+                  'rgba(54, 162, 235, 1)',
+                  'rgba(54, 162, 235, 1)',
+                  'rgba(54, 162, 235, 1)',
+                  'rgba(54, 162, 235, 1)',
+                  'rgba(54, 162, 235, 1)',
+                  'rgba(54, 162, 235, 1)',
+                  'rgba(54, 162, 235, 1)',
+                  'rgba(54, 162, 235, 1)',
+                  'rgba(54, 162, 235, 1)',
+                  'rgba(54, 162, 235, 1)',
+                  'rgba(54, 162, 235, 1)',
+                  'rgba(54, 162, 235, 1)',
+                  'rgba(54, 162, 235, 1)',
+                  'rgba(54, 162, 235, 1)',
+                  'rgba(54, 162, 235, 1)',
+                  'rgba(54, 162, 235, 1)',
+                  'rgba(54, 162, 235, 1)',
+                  'rgba(54, 162, 235, 1)',
+                  'rgba(54, 162, 235, 1)'
                   ],
                   borderWidth: 1
                 }]
@@ -195,6 +262,104 @@
                 }
               }
             }); // end chart obj
+
+
+            let myChartt = new Chart(ctxHumidity, {
+              type: 'bar',
+              data: {
+                labels: [ 
+                <% if (thermo.length > 0) { %>
+                  <% for (let temp of thermo) { %>
+                    <% if (moment(temp.date).format('DD/MM/YY')==moment().format('DD/MM/YY')) { %>
+                      "<%= moment(temp.date).format('HH:mm')  %>",
+                      <% } %>
+                  <% } %>
+                  <% } %>
+              ],
+                datasets: [{
+                  label: '#',
+                  data: [
+                  <% if (thermo.length > 0) { %>
+                  <% for (let temp of thermo) { %>
+                      <%= temp.humidity %>,
+                     
+                  <% } %>
+                  <% } %>
+                ],
+                  backgroundColor: [
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+
+                  ],
+                  borderColor: [
+                    'rgba(255, 159, 64, 1)',
+                    'rgba(255, 159, 64, 1)',
+                    'rgba(255, 159, 64, 1)',
+                    'rgba(255, 159, 64, 1)',
+                    'rgba(255, 159, 64, 1)',
+                    'rgba(255, 159, 64, 1)',
+                    'rgba(255, 159, 64, 1)',
+                    'rgba(255, 159, 64, 1)',
+                    'rgba(255, 159, 64, 1)',
+                    'rgba(255, 159, 64, 1)',
+                    'rgba(255, 159, 64, 1)',
+                    'rgba(255, 159, 64, 1)',
+                    'rgba(255, 159, 64, 1)',
+                    'rgba(255, 159, 64, 1)',
+                    'rgba(255, 159, 64, 1)',
+                    'rgba(255, 159, 64, 1)',
+                    'rgba(255, 159, 64, 1)',
+                    'rgba(255, 159, 64, 1)',
+                    'rgba(255, 159, 64, 1)',
+                    'rgba(255, 159, 64, 1)',
+                    'rgba(255, 159, 64, 1)',
+                    'rgba(255, 159, 64, 1)',
+                    'rgba(255, 159, 64, 1)',
+                    'rgba(255, 159, 64, 1)'
+
+
+                  ],
+                  borderWidth: 1
+                }]
+              },
+              options: {
+                scales: {
+                  yAxes: [{
+                    ticks: {
+                      beginAtZero: true
+                    }
+                  }]
+                },
+                title: {
+                  display: true,
+                  text: 'Humidity of the room',
+                  fontSize: 18
+                }
+              }
+            }); // end chart obj
+
           </script>
 
           <!--The below script will be used in order to validate and send POST request from front end to the back end-->

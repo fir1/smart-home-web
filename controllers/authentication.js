@@ -14,7 +14,7 @@ const log = require('simple-node-logger').createSimpleFileLogger('loginfailed.lo
 
 const transporter = nodemailer.createTransport(sendGrid({      //nodemailer will use the service of sendgrid to send emails
  auth:{
-   api_key: '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'
+   api_key: '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'
  }
 })); 
 
@@ -153,12 +153,9 @@ exports.postSignup = (req, res, next) => {
       return bcrypt
       .hash(password, 12) //encrypt the given password with the highest hash encryption level 12
       .then(hashedPassword => {
-      return  bcrypt
-       .hash(serialPi, 12) //encrypt the given serialPi with the highest hash encryption level 12
-        .then(hashedSerialPi => {
         const user = new User({
           userName: userName,
-          serialNumber: hashedSerialPi,
+          serialNumber: serialPi,
           email: email,
           password: hashedPassword,
         });
@@ -166,7 +163,6 @@ exports.postSignup = (req, res, next) => {
         user.emailConfirmationToken = token;
         user.emailConfirmationExpiration = Date.now() + 5400000 ; //the reset tokens expiry date is from when the user is pressed + 1:30hour in milliseconds
         return user.save();
-      })
     })
   })
     .then(result=>{
