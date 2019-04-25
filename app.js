@@ -23,7 +23,7 @@ const app = express();
 While testing the application locally please do comment them out, otherwise the application will not run locally
 This is required for the production purposes.
 */
- // enable ssl redirect
+ // enable ssl redirect 
 app.use(sslRedirect());
 
 const PORT = process.env.PORT || 5000;

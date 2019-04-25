@@ -127,7 +127,6 @@ exports.postLogin = (req, res, next) => {
 
   // Verify URL
   const verifyUrl = `https://google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${captcha}&remoteip=${req.connection.remoteAddress}`;
-  const clientIp = requestIp.getClientIp(req); 
   // Make Request To VerifyURL
   request(verifyUrl, (err, response, body) => {
     body = JSON.parse(body);
