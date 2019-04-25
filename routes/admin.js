@@ -17,6 +17,7 @@ router.post('/state-change-all',isAuth,adminControl.postStateChangeAll);
 
 router.post('/update-profile',isAuth,adminControl.postUpdateProfile);
 
+router.post('/update-password',isAuth,adminControl.postUpdatePassword);
 
 router.get('/lights',isAuth,adminControl.getLight);
 

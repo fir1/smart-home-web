@@ -2,7 +2,8 @@ const Device = require('../models/device');
 const User = require('../models/user');
 const Temp = require('../models/temperature');
 var moment = require('moment');
-const bcrypt = require('bcryptjs');
+const bcrypt = require('bcryptjs')
+const crypto = require ('crypto');
 const nodemailer = require('nodemailer');
 const sendGrid = require ('nodemailer-sendgrid-transport') //sendgrid is the 3rd party package,  in order to send emails to users
 
@@ -138,10 +139,17 @@ exports.getAirConditioner = (req, res, next) => {
 
 
 exports.getControlPanel = (req, res, next) => {
-
+  let messageError = req.flash('error'); //the error is the key whatever stored in the key error will be shown in here
+  if(messageError.length > 0){
+    messageError=messageError[0];
+  }
+  else{
+    messageError=null;
+  }
   res.render('controlPanel', {
     path: '/controlPanel',
-    username: req.username
+    username: req.username,
+    errorMessage: messageError
   });
 };
 
@@ -273,6 +281,7 @@ exports.postUpdateProfile = (req, res, next) => {
   const userId = req.user;
   const username = req.body.username;
 
+  
   var query = {
     _id: userId
   };
@@ -292,6 +301,80 @@ exports.postUpdateProfile = (req, res, next) => {
     });
 };
 
+exports.postUpdatePassword = (req, res, next) => {
+
+  const userId = req.user;
+  const password = req.body.password;
+  const newPassword = req.body.newPassword;
+   
+  var email="";
+  
+  var query = {
+    _id: userId
+  };
+  var update = {
+    password: newPassword
+  };
+    crypto.randomBytes(32, (err,buffer)=>{
+      if(err){
+        console.log(err);
+        return redirect('/controlPanel')
+      }
+
+
+
+      const token = buffer.toString('hex'); //buffer will store hexadecimal values thats why we need to convert it to the String
+      User.findOne({_id: userId})   //the email of the user will be pulled from the request body
+      .then(user => {
+        
+        bcrypt
+        .compare(password, user.password) //the encrypted password from database will be checked with the password that user entered it will return true or false
+        .then(doMatch => {
+          if (doMatch) {
+           
+          return bcrypt
+          .hash(newPassword, 12) //encrypt the given password with the highest hash encryption level 12
+          .then(hashedPassword => {
+          
+              user.password = hashedPassword;
+            email=user.email;
+            user.isEmailConfirmed = false;
+            user.emailConfirmationToken = token;
+            user.emailConfirmationExpiration = Date.now() + 5400000 ; //the reset tokens expiry date is from when the user is pressed + 1:30hour in milliseconds
+            return user.save();
+            
+        })
+        .then(next=>{
+          req.session.destroy(err => {
+            console.log(err);
+            res.redirect('/login');
+          });
+        })
+        .then(next=>{               
+          transporter.sendMail({    
+            to: email,          //the user's email which was found from DB the one who did request for password Reset 
+            from: 'myhome@smart.com',
+            subject: 'Confirm Your Password',
+            html: `
+                  <p>You have Changed Your Password.</p>
+                  <p>Click this <a href="https://www.smart-homes.me/confirmEmail/${token}">link</a> in order to confirm you are authenticated to change the password</p>
+                  <p>Note: This link will expiry in 1:30 hour.</p>
+            `
+                                                                              //${} will able to inject variables and values inside of {}
+        }); 
+        })
+      }
+      req.flash('error','Old Password does not match.');
+      return res.redirect('/controlPanel');
+    })
+    })
+      .catch(err=>{
+        console.log(err);
+      })
+  
+  })
+
+};
 
 
 exports.deleteDevice = (req, res, next) => {

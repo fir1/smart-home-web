@@ -112,27 +112,56 @@
               </div>
 
               <div class="col-md-10 m-auto">
+                
                 <hr>
                 <div class="card">
                   <div class="card-header card-header-primary">
                     <h4 class="card-title">Edit Profile</h4>
                   </div>
                   <div class="card-body">
+                     
                     <div>
-                      <div id="errorMessage"></div>
-                      <div class="row">
-                        <div class="col-md-3">
-                          <div class="form-group">
-                            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                            <label class="bmd-label-floating">Username</label>
-                            <input type="text" class="form-control" name="username">
-                            <button type="submit" class="btn btn-primary pull-right"
-                              onclick="updateProfile(this)">Update Profile</button>
-                          </div>
-                        </div>
+           
+                      
+                          <div class="col-lg-6 col-md-9 col-sm-9">
+                              <div class="card card-stats">
+                                <div class="card-header card-header-info card-header-icon">
+                                  
+                                  <h3 class="card-title">Username
+                                            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                                            <i class="material-icons">person</i>
+                                            <input type="text" class="form-control" name="username" placeholder="New Username">
+                                            <button type="submit" class="btn btn-primary pull-right"
+                                              onclick="updateProfile(this)">Change username</button>            
+                                  </h3>
+                                </div>
+                       
                       </div>
                     </div>
-                  </div>
+                    <form onsubmit="return validateUpdatePassword()" method="POST" action="/update-password" >                    <div class="col-lg-6 col-md-9 col-sm-9">
+                        <div class="card card-stats">
+                          <div class="card-header card-header-info card-header-icon">
+                              <div id="errorMessage"></div>
+                              <% if (errorMessage) {%>
+                                <div class="user-message user-message--error"><%= errorMessage %></div>
+                                <% } %>
+                            <h3 class="card-title">Password
+                                      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                                      <i class="material-icons">lock</i>
+                                      <input type="password" class="form-control" name="password" id="oldPassword" placeholder="Old Password">
+                                      <input type="password" class="form-control" name="newPassword" id="newPassword" placeholder="New Password">
+                                      <input type="password" class="form-control" name="re_pass" id="re_pass" placeholder="Confirm New Password">
+                                      <button type="submit" class="btn btn-primary pull-right">Change Password</button>     
+                                          
+                            </h3>
+                          
+                          </div>
+                          
+                        
+                </div>
+                </form>
+              </div>
+                   </div>
                 </div>
               </div>
             </div>
@@ -146,6 +175,25 @@
       <script src="/js/core/material.js" type="text/javascript"></script>
        <!--The below script will be used in order to validate and send POST request from front end to the back end-->
       <script src="/js/admin.js"></script>
+      <script type="text/javascript" src="/js/plugins/pwstrength-bootstrap.min.js"></script>
+      <script type="text/javascript">
+          jQuery(document).ready(function () {
+              "use strict";
+              var options = {};
+              options.ui = {
+                  container: "#pwd-container",
+                  showStatus: true,
+                  showProgressBar: true,
+                  viewports: {
+                      verdict: ".pwstrength_viewport_verdict"
+                  }
+              };
+  
+              $(':password').pwstrength(options);
+  
+          });
+      </script>
+          <script type="text/javascript" src="/js/validationForms.js"></script>
 </body>
 
 </html>

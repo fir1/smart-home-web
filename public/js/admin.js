@@ -1,6 +1,5 @@
-/* Note: with each POST request they should be CSRF token included, otherwise the server will throw exception error.
- */
-
+// Note: with each POST request they should be CSRF token included, otherwise the server will throw exception error.
+ 
 
 // The below function will send POST request to the server to delete Device
 const deleteDevice = (button) => {
@@ -210,14 +209,6 @@ const updateProfile = (input) => {
 
     $(".message").remove(); // this required to clear error messages so new errors will show up
 
-    // if(username.length===0){
-    //        $("#errorMessage").addClass("user-message user-message--error");
-    //         $("#errorMessage").append('<p class="message">The User Name can not be empty</p>').show();  
-    //         return false; 
-    // }
-    // $('#user').append('Hello');
-    // return true;
-
     let myKeyVals = {
         "username": username
     };
@@ -244,6 +235,7 @@ const updateProfile = (input) => {
         $("#errorMessage").append('<p class="message">The User Name can not be empty</p>').show();
     }
 };
+
 
 // The below function will send POST request to the server to log out
 const postLogOut = () => {

@@ -60,6 +60,31 @@ const validateSignUpForm = () => {
     return false;
 };
 
+const validateUpdatePassword = () =>{
+    const oldPassword = $('#oldPassword').val();
+    const newPassword = $('#newPassword').val();
+    const confirmPassword = $('#re_pass').val();
+
+    $(".message").remove(); //this required to clear error messages so new errors will show up
+
+    if(oldPassword.length === 0){
+        $('#errorMessage').addClass("user-message user-message--error");
+        $('#errorMessage').append('<p class="message">Old Password Can Not Be Empty</p>').show();
+        return false;
+    }
+
+    if (checkPassword(newPassword, "", "") === false) {
+     return false;
+    }  
+
+    if ((newPassword !== confirmPassword)) {
+        $('#errorMessage').addClass("user-message user-message--error");
+        $('#errorMessage').append('<p class="message">New Passwords do not match!</p>').show();
+        return false;
+    }
+    return true;
+}
+
 
 const ValidateNewPassword = () => {
     const password = $('#password').val();
