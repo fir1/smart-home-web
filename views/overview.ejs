@@ -191,7 +191,7 @@
                
                 <% if (thermo.length > 0) { %>
                   <% for (let temp of thermo) { %>
-                      "<%= moment(temp.date).local().format('HH:mm')  %>",    
+                      "<%= moment(temp.date).add(1,'hours').format('HH:mm')  %>",    
                   <% } %>
                   <% } %>
                    
