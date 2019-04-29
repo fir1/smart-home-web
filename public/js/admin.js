@@ -1,3 +1,4 @@
+
 // Note: with each POST request they should be CSRF token included, otherwise the server will throw exception error.
  
 
@@ -257,3 +258,189 @@ const postLogOut = () => {
             window.location.replace(redirect);
         });
 };
+
+const updateGraph = (timeOrDate) => {
+console.log(moment().format());
+    const csrf = $("input[name=_csrf]").val();
+ console.log(timeOrDate.length);
+    if(timeOrDate.length === 11){
+        $("#dropdownMenuButton").html(timeOrDate);
+        $("#ddropdownMenuButton").html("DAILY STATISTICS");
+       
+    }
+    else{
+        $("#dropdownMenuButton").html("SELECT TIMES FOR TODAY");
+        $("#ddropdownMenuButton").html(timeOrDate);
+    }
+  
+    let myKeyVals = {
+    "selected": timeOrDate
+    };
+    
+    console.log(myKeyVals); 
+    
+    $.ajaxSetup({
+    "beforeSend": function (xhr) {
+       xhr.setRequestHeader("Csrf-Token", csrf);
+    }
+    });
+    
+    $.ajax({
+       "url": "/update-graph",
+       "type": "POST",
+       "data": myKeyVals
+    })
+    .then((dataReceived) => {
+       console.log(dataReceived.message);
+       var received=dataReceived.message;
+       
+     var dates=[];
+     var temps=[];
+     var humidity=[];
+    
+    myChart.destroy();
+    
+         for(var a=0;a<received.length;a++){
+             console.log(moment(received[a].date).format('HH:mm'));
+             dates[a]=moment(received[a].date).format('HH:mm');
+             temps[a]=received[a].temperature;
+             humidity[a]=received[a].humidity;
+         }
+         console.log(dates);
+         console.log(temps);
+         myChart = new Chart(ctx, {
+           type: 'bar',
+           data: {
+             labels: dates,
+             datasets: [{
+               label: 'Temperature in C',
+               data: temps,
+               backgroundColor: [
+               'rgba(54, 162, 235, 0.2)',
+                 'rgba(54, 162, 235, 0.2)',
+                 'rgba(54, 162, 235, 0.2)',
+                 'rgba(54, 162, 235, 0.2)',
+                 'rgba(54, 162, 235, 0.2)',
+                 'rgba(54, 162, 235, 0.2)',
+                 'rgba(54, 162, 235, 0.2)',
+                 'rgba(54, 162, 235, 0.2)',
+                 'rgba(54, 162, 235, 0.2)',
+                 'rgba(54, 162, 235, 0.2)',
+                 'rgba(54, 162, 235, 0.2)',
+                 'rgba(54, 162, 235, 0.2)',
+                 'rgba(54, 162, 235, 0.2)',
+                 'rgba(54, 162, 235, 0.2)',
+                 'rgba(54, 162, 235, 0.2)',
+                 'rgba(54, 162, 235, 0.2)',
+                 'rgba(54, 162, 235, 0.2)',
+                 'rgba(54, 162, 235, 0.2)',
+                 'rgba(54, 162, 235, 0.2)',
+                 'rgba(54, 162, 235, 0.2)',
+                 'rgba(54, 162, 235, 0.2)',
+                 'rgba(54, 162, 235, 0.2)',
+                 'rgba(54, 162, 235, 0.2)',
+                 'rgba(54, 162, 235, 0.2)'
+               ],
+               borderColor: [
+               'rgba(54, 162, 235, 1)',
+               'rgba(54, 162, 235, 1)',
+               'rgba(54, 162, 235, 1)',
+               'rgba(54, 162, 235, 1)',
+               'rgba(54, 162, 235, 1)',
+               'rgba(54, 162, 235, 1)',
+               'rgba(54, 162, 235, 1)',
+               'rgba(54, 162, 235, 1)',
+               'rgba(54, 162, 235, 1)',
+               'rgba(54, 162, 235, 1)',
+               'rgba(54, 162, 235, 1)',
+               'rgba(54, 162, 235, 1)',
+               'rgba(54, 162, 235, 1)',
+               'rgba(54, 162, 235, 1)',
+               'rgba(54, 162, 235, 1)',
+               'rgba(54, 162, 235, 1)',
+               'rgba(54, 162, 235, 1)',
+               'rgba(54, 162, 235, 1)',
+               'rgba(54, 162, 235, 1)',
+               'rgba(54, 162, 235, 1)',
+               'rgba(54, 162, 235, 1)',
+               'rgba(54, 162, 235, 1)',
+               'rgba(54, 162, 235, 1)',
+               'rgba(54, 162, 235, 1)'
+               ],
+               borderWidth: 1
+             },
+             {
+               label: 'Humidity in %',
+               data: humidity,
+               backgroundColor: [
+                 'rgba(255, 159, 64, 0.2)',
+                 'rgba(255, 159, 64, 0.2)',
+                 'rgba(255, 159, 64, 0.2)',
+                 'rgba(255, 159, 64, 0.2)',
+                 'rgba(255, 159, 64, 0.2)',
+                 'rgba(255, 159, 64, 0.2)',
+                 'rgba(255, 159, 64, 0.2)',
+                 'rgba(255, 159, 64, 0.2)',
+                 'rgba(255, 159, 64, 0.2)',
+                 'rgba(255, 159, 64, 0.2)',
+                 'rgba(255, 159, 64, 0.2)',
+                 'rgba(255, 159, 64, 0.2)',
+                 'rgba(255, 159, 64, 0.2)',
+                 'rgba(255, 159, 64, 0.2)',
+                 'rgba(255, 159, 64, 0.2)',
+                 'rgba(255, 159, 64, 0.2)',
+                 'rgba(255, 159, 64, 0.2)',
+                 'rgba(255, 159, 64, 0.2)',
+                 'rgba(255, 159, 64, 0.2)',
+                 'rgba(255, 159, 64, 0.2)',
+                 'rgba(255, 159, 64, 0.2)',
+                 'rgba(255, 159, 64, 0.2)',
+                 'rgba(255, 159, 64, 0.2)',
+                 'rgba(255, 159, 64, 0.2)'
+               ],
+               borderColor: [
+                 'rgba(255, 159, 64, 1)',
+                 'rgba(255, 159, 64, 1)',
+                 'rgba(255, 159, 64, 1)',
+                 'rgba(255, 159, 64, 1)',
+                 'rgba(255, 159, 64, 1)',
+                 'rgba(255, 159, 64, 1)',
+                 'rgba(255, 159, 64, 1)',
+                 'rgba(255, 159, 64, 1)',
+                 'rgba(255, 159, 64, 1)',
+                 'rgba(255, 159, 64, 1)',
+                 'rgba(255, 159, 64, 1)',
+                 'rgba(255, 159, 64, 1)',
+                 'rgba(255, 159, 64, 1)',
+                 'rgba(255, 159, 64, 1)',
+                 'rgba(255, 159, 64, 1)',
+                 'rgba(255, 159, 64, 1)',
+                 'rgba(255, 159, 64, 1)',
+                 'rgba(255, 159, 64, 1)',
+                 'rgba(255, 159, 64, 1)',
+                 'rgba(255, 159, 64, 1)',
+                 'rgba(255, 159, 64, 1)',
+                 'rgba(255, 159, 64, 1)',
+                 'rgba(255, 159, 64, 1)',
+                 'rgba(255, 159, 64, 1)'
+               ],
+               borderWidth: 1
+             }]
+           },
+           options: {
+             scales: {
+               yAxes: [{
+                 ticks: {
+                   beginAtZero: true
+                 }
+               }]
+             },
+             title: {
+               display: true,
+               text: 'Temperature of the room',
+               fontSize: 18
+             }
+           }
+         });
+    });
+    };

@@ -27,6 +27,8 @@ router.post('/state-change-all',isAuth,adminControl.postStateChangeAll);
 
 router.post('/update-profile',isAuth,adminControl.postUpdateUsername);
 
+router.post('/update-graph',isAuth,adminControl.postUpdateGraph);
+
 router.post('/update-password',isAuth,adminControl.postUpdatePassword);
 
 router.delete('/device/:deviceId', isAuth, adminControl.deleteDevice); //:deviceId will be dynamic because delete request will have a value for deviceId

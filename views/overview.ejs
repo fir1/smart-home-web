@@ -131,9 +131,35 @@
             <div class="row">
                 
               <div class="col-md-12">
-                  
+                <a id="graph"></a>
                 <div class="card card-chart">
-                  <canvas id="myChart" id="bar-chart" width="800" height="300"></canvas>
+                    <div class="dropdown">
+                        <button class="btn btn-secondary  dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                         Select Times for Today
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                          <a class="dropdown-item" href="#graph" onclick="updateGraph('07:00-12:00')">07:00 - 12:00</a>
+                          <a class="dropdown-item" href="#graph" onclick="updateGraph('13:00-18:00')">13:00 - 18:00</a>
+                          <a class="dropdown-item" href="#graph" onclick="updateGraph('19:00-24:00')">19:00 - 24:00</a>
+                        </div>
+                      </div>
+                      <div class="dropdown">
+                        <button class="btn btn-secondary  dropdown-toggle" type="button" class="date" id="ddropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                         Daily Statistics
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                          <a class="dropdown-item" href="#graph" onclick="updateGraph( '<%= moment().subtract(7,'days').format('YYYY-MM-DD') %>' )"><%= moment().subtract(7,'days').format("YYYY-MM-DD") %></a>
+                          <a class="dropdown-item" href="#graph" onclick="updateGraph( '<%= moment().subtract(6,'days').format('YYYY-MM-DD') %>' )"><%= moment().subtract(6,'days').format("YYYY-MM-DD") %></a>
+                          <a class="dropdown-item" href="#graph" onclick="updateGraph( '<%= moment().subtract(5,'days').format('YYYY-MM-DD') %>' )"><%= moment().subtract(5,'days').format("YYYY-MM-DD") %></a>
+                          <a class="dropdown-item" href="#graph" onclick="updateGraph( '<%= moment().subtract(4,'days').format('YYYY-MM-DD') %>' )"><%= moment().subtract(4,'days').format("YYYY-MM-DD") %></a>
+                          <a class="dropdown-item" href="#graph" onclick="updateGraph( '<%= moment().subtract(3,'days').format('YYYY-MM-DD') %>' )"><%= moment().subtract(3,'days').format("YYYY-MM-DD") %></a>
+                          <a class="dropdown-item" href="#graph" onclick="updateGraph( '<%= moment().subtract(2,'days').format('YYYY-MM-DD') %>' )"><%= moment().subtract(2,'days').format("YYYY-MM-DD") %></a>
+                          <a class="dropdown-item" href="#graph" onclick="updateGraph( '<%= moment().subtract(1,'days').format('YYYY-MM-DD') %>' )"><%= moment().subtract(1,'days').format("YYYY-MM-DD") %></a>
+                        </div>
+                      </div>
+                  <canvas id="myChart" id="bar-chart" width="800" height="420"></canvas>
                   <div class="card-footer">
                     <div class="stats">
                       <i class="material-icons">access_time</i> updated 1 hourly
@@ -144,19 +170,7 @@
               <hr>
             </div>
 
-            <div class="row">
-              <div class="col-md-12">
-                <div class="card card-chart">
-                  <canvas id="myChartHumidity" id="bar-chart" width="800" height="300"></canvas>
-                  <div class="card-footer">
-                    <div class="stats">
-                      <i class="material-icons">access_time</i> updated 4 minutes ago
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <hr>
-            </div>
+             
           </div>
 
           <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
@@ -167,25 +181,25 @@
           <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
 
           <script>
-            //The below script is for displaying the chart.
-            let ctx = document.querySelector('#myChart').getContext('2d');
-            let ctxHumidity = document.querySelector('#myChartHumidity').getContext('2d');
-
+       
+       let ctx = document.querySelector('#myChart').getContext('2d');
+            
             let myChart = new Chart(ctx, {
               type: 'bar',
               data: {
                 labels: [ 
+               
                 <% if (thermo.length > 0) { %>
                   <% for (let temp of thermo) { %>
-                    <% if (moment(temp.date).format('DD/MM/YY')==moment().format('DD/MM/YY')) { %>
-                      "<%= moment(temp.date).format('HH:mm')  %>",
-                      <% } %>
+                      "<%= moment(temp.date).format('HH:mm')  %>",    
                   <% } %>
                   <% } %>
+                   
               ],
                 datasets: [{
                   label: '#',
-                  data: [
+                  data: [ 
+                    
                   <% if (thermo.length > 0) { %>
                   <% for (let temp of thermo) { %>
                       <%= temp.temperature %>,
@@ -199,46 +213,9 @@
                     'rgba(54, 162, 235, 0.2)',
                     'rgba(54, 162, 235, 0.2)',
                     'rgba(54, 162, 235, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                     
+                    'rgba(54, 162, 235, 0.2)'
                   ],
                   borderColor: [
-                  'rgba(54, 162, 235, 1)',
-                  'rgba(54, 162, 235, 1)',
-                  'rgba(54, 162, 235, 1)',
-                  'rgba(54, 162, 235, 1)',
-                  'rgba(54, 162, 235, 1)',
-                  'rgba(54, 162, 235, 1)',
-                  'rgba(54, 162, 235, 1)',
-                  'rgba(54, 162, 235, 1)',
-                  'rgba(54, 162, 235, 1)',
-                  'rgba(54, 162, 235, 1)',
-                  'rgba(54, 162, 235, 1)',
-                  'rgba(54, 162, 235, 1)',
-                  'rgba(54, 162, 235, 1)',
-                  'rgba(54, 162, 235, 1)',
-                  'rgba(54, 162, 235, 1)',
-                  'rgba(54, 162, 235, 1)',
-                  'rgba(54, 162, 235, 1)',
-                  'rgba(54, 162, 235, 1)',
                   'rgba(54, 162, 235, 1)',
                   'rgba(54, 162, 235, 1)',
                   'rgba(54, 162, 235, 1)',
@@ -247,38 +224,8 @@
                   'rgba(54, 162, 235, 1)'
                   ],
                   borderWidth: 1
-                }]
-              },
-              options: {
-                scales: {
-                  yAxes: [{
-                    ticks: {
-                      beginAtZero: true
-                    }
-                  }]
                 },
-                title: {
-                  display: true,
-                  text: 'Temperature of the room',
-                  fontSize: 18
-                }
-              }
-            }); // end chart obj
-
-
-            let myChartt = new Chart(ctxHumidity, {
-              type: 'bar',
-              data: {
-                labels: [ 
-                <% if (thermo.length > 0) { %>
-                  <% for (let temp of thermo) { %>
-                    <% if (moment(temp.date).format('DD/MM/YY')==moment().format('DD/MM/YY')) { %>
-                      "<%= moment(temp.date).format('HH:mm')  %>",
-                      <% } %>
-                  <% } %>
-                  <% } %>
-              ],
-                datasets: [{
+                {
                   label: '#',
                   data: [
                   <% if (thermo.length > 0) { %>
@@ -294,26 +241,7 @@
                     'rgba(255, 159, 64, 0.2)',
                     'rgba(255, 159, 64, 0.2)',
                     'rgba(255, 159, 64, 0.2)',
-                    'rgba(255, 159, 64, 0.2)',
-                    'rgba(255, 159, 64, 0.2)',
-                    'rgba(255, 159, 64, 0.2)',
-                    'rgba(255, 159, 64, 0.2)',
-                    'rgba(255, 159, 64, 0.2)',
-                    'rgba(255, 159, 64, 0.2)',
-                    'rgba(255, 159, 64, 0.2)',
-                    'rgba(255, 159, 64, 0.2)',
-                    'rgba(255, 159, 64, 0.2)',
-                    'rgba(255, 159, 64, 0.2)',
-                    'rgba(255, 159, 64, 0.2)',
-                    'rgba(255, 159, 64, 0.2)',
-                    'rgba(255, 159, 64, 0.2)',
-                    'rgba(255, 159, 64, 0.2)',
-                    'rgba(255, 159, 64, 0.2)',
-                    'rgba(255, 159, 64, 0.2)',
-                    'rgba(255, 159, 64, 0.2)',
-                    'rgba(255, 159, 64, 0.2)',
                     'rgba(255, 159, 64, 0.2)'
-
                   ],
                   borderColor: [
                     'rgba(255, 159, 64, 1)',
@@ -321,30 +249,11 @@
                     'rgba(255, 159, 64, 1)',
                     'rgba(255, 159, 64, 1)',
                     'rgba(255, 159, 64, 1)',
-                    'rgba(255, 159, 64, 1)',
-                    'rgba(255, 159, 64, 1)',
-                    'rgba(255, 159, 64, 1)',
-                    'rgba(255, 159, 64, 1)',
-                    'rgba(255, 159, 64, 1)',
-                    'rgba(255, 159, 64, 1)',
-                    'rgba(255, 159, 64, 1)',
-                    'rgba(255, 159, 64, 1)',
-                    'rgba(255, 159, 64, 1)',
-                    'rgba(255, 159, 64, 1)',
-                    'rgba(255, 159, 64, 1)',
-                    'rgba(255, 159, 64, 1)',
-                    'rgba(255, 159, 64, 1)',
-                    'rgba(255, 159, 64, 1)',
-                    'rgba(255, 159, 64, 1)',
-                    'rgba(255, 159, 64, 1)',
-                    'rgba(255, 159, 64, 1)',
-                    'rgba(255, 159, 64, 1)',
                     'rgba(255, 159, 64, 1)'
-
-
                   ],
                   borderWidth: 1
-                }]
+                }
+              ]
               },
               options: {
                 scales: {
@@ -356,12 +265,11 @@
                 },
                 title: {
                   display: true,
-                  text: 'Humidity of the room',
+                  text: 'Temperature of the room',
                   fontSize: 18
                 }
               }
-            }); // end chart obj
-
+            }); // end chart obj       
           </script>
 
           <!--The below script will be used in order to validate and send POST request from front end to the back end-->

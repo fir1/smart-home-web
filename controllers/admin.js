@@ -19,9 +19,12 @@ exports.getOverview = (req, res, next) => {
   const userId = req.user;
   const serialNumber = req.serialNumber;
 
+var start = moment().subtract(6,'hours');// only show the lattest 6 hours temp/humidity from current time
+var end = moment();// shows the current time
+
   Device.find({userId})
     .then(devices => {
-      Temp.find({serialNumber: serialNumber})
+      Temp.find({serialNumber: serialNumber, date: {$gte: start, $lt: end}})// only show the lattest 6 hours temp/humidity from current time
   .then(resultTemp=>{ 
       res.render('overview', {
         dev: devices,
@@ -368,3 +371,42 @@ exports.deleteDevice = (req, res, next) => {
       });
     });
 };
+
+
+
+
+  exports.postUpdateGraph = (req, res, next) => {
+
+    const serialNumber = req.serialNumber;
+    const selectedTimeOrDate = req.body.selected;
+    var currentDate = moment().format("YYYY-MM-DD");
+
+    var start,end;
+
+    
+    if(selectedTimeOrDate === "07:00-12:00"){
+      start=currentDate+"T07:00:00.000";
+      end=currentDate+"T12:00:00.000";
+    }
+    else if(selectedTimeOrDate === "13:00-18:00"){
+      start=currentDate+"T13:00:00.000";
+      end=currentDate+"T18:00:00.000";
+    }
+    else if(selectedTimeOrDate === "19:00-24:00"){
+      start=currentDate+"T19:00:00.000";
+      end=currentDate+"T24:00:00.000";
+    }
+    else {
+      /*In case of the DATE was choosen then the statistics of temperature and humidity will be shown from start of the Day till the end
+      */
+      start = selectedTimeOrDate + "T00:00:00.000";
+      end = selectedTimeOrDate + "T23:59:59.000";
+    }
+
+    Temp.find({serialNumber: serialNumber, date: {$gte: start, $lt: end}})
+.then(resultTemp=>{ 
+  res.status(200).json({message: resultTemp });
+  })
+  };
+
+  

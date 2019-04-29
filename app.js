@@ -9,13 +9,15 @@ const csrf = require('csurf');
 const flash = require('connect-flash');
 const User = require('./models/user');
 const Device = require('./models/device');
+const Temp = require('./models/temperature');
 var moment = require('moment-timezone');
 const authRoutes = require('./routes/authentication');
 const adminRoutes = require('./routes/admin');
 const sslRedirect = require('heroku-ssl-redirect');
 
+
 const MONGODB_URI =
-  'mongodb+srv://firdavs:Modarjon2112@smarthome-ogiob.mongodb.net/device?retryWrites=true';
+  'mongodb+srv://smarthome:JuMzsDoiDo0sv1IT@smarthome-ogiob.mongodb.net/device?retryWrites=true';
 
 const app = express();
 
@@ -51,6 +53,7 @@ app.use(
     secret: 'my secret',
     resave: false,
     saveUninitialized: false,
+    cookie: { maxAge: 3600000 }, //the session will expire in 1 hour, then the user must login 3600000 is in milliseconds
     store: store
   })
 );
@@ -117,7 +120,6 @@ mongoose
           state: 'On'
         })
         .then(devices => {
-            
         });
 
       Device.updateMany(queryFinishTime, {
@@ -126,11 +128,19 @@ mongoose
         })
         .then(devices => {
         });
+
+        var aWeekAgo = moment().subtract(8,'days');  
+        //On database collection only 1 week of information will be kept regarding the Temperatures if it is longer then one week delete it
+    Temp.deleteMany({date: {$lte: aWeekAgo}}, function (err) {
+      if (err) return handleError(err);
+      // deleted at most one tank document
+    });
     }, null, true);
+
+    
 
     // app.listen(3000,'0.0.0.0'); //'0.0.0.0' means you can connect to website from any device which is connected to the same router 
     //                             // if you want to access it be sure that you will access by knowing IP address of laptop ipconfig in command prompt
-    //                             //also change all the POST requests link from light.ejs and etc.
     app.listen(PORT);
   })
   .catch(err => {
