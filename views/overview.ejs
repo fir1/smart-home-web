@@ -192,7 +192,7 @@
                
                 <% if (thermo.length > 0) { %>
                   <% for (let temp of thermo) { %>
-                      "<%= moment(temp.date).tr(moment.tz.guess()).format('HH:mm')  %>",  //The data which is from Server is based on UTC, that's why +1 hour  
+                      "<%= moment(temp.date).tz(moment.tz.guess()).format('HH:mm')  %>",  //The data which is from Server is based on UTC, that's why +1 hour  
                   <% } %>
                   <% } %>
                    
