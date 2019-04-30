@@ -1,7 +1,7 @@
 const Device = require('../models/device');
 const User = require('../models/user');
 const Temp = require('../models/temperature');
-var moment = require('moment');
+var moment = require('moment-timezone');
 const bcrypt = require('bcryptjs')
 const crypto = require ('crypto');
 const nodemailer = require('nodemailer');
