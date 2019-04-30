@@ -151,7 +151,7 @@
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                          <a class="dropdown-item" href="#graph" onclick="updateGraph((moment().subtract(7,'days').format('YYYY-MM-DD')+'T00:00:00.000'),(moment().subtract(7,'days').format('YYYY-MM-DD')+'T24:00:00.000'))"><%= moment().tz(moment.tz.guess()).subtract(7,'days').format("YYYY-MM-DD") %></a>
+                          <a class="dropdown-item" href="#graph" onclick="updateGraph((moment().subtract(7,'days').format('YYYY-MM-DD')+'T00:00:00.000'),(moment().subtract(7,'days').format('YYYY-MM-DD')+'T24:00:00.000'))"><% moment().subtract(7,'days').format("YYYY-MM-DD") %></a>
                           <a class="dropdown-item" href="#graph" onclick="updateGraph((moment().subtract(6,'days').format('YYYY-MM-DD')+'T00:00:00.000'),(moment().subtract(6,'days').format('YYYY-MM-DD')+'T24:00:00.000'))"><%= moment().subtract(6,'days').format("YYYY-MM-DD") %></a>
                           <a class="dropdown-item" href="#graph" onclick="updateGraph((moment().subtract(5,'days').format('YYYY-MM-DD')+'T00:00:00.000'),(moment().subtract(5,'days').format('YYYY-MM-DD')+'T24:00:00.000'))"><%= moment().subtract(5,'days').format("YYYY-MM-DD") %></a>
                           <a class="dropdown-item" href="#graph" onclick="updateGraph((moment().subtract(4,'days').format('YYYY-MM-DD')+'T00:00:00.000'),(moment().subtract(4,'days').format('YYYY-MM-DD')+'T24:00:00.000'))"><%= moment().subtract(4,'days').format("YYYY-MM-DD") %></a>
@@ -192,7 +192,7 @@
                
                 <% if (thermo.length > 0) { %>
                   <% for (let temp of thermo) { %>
-                      "<%= moment(temp.date).tz(moment.tz.guess()).format('HH:mm')  %>",  //The data which is from Server is based on UTC, that's why +1 hour  
+                      "<%= moment(temp.date).add(1,'hours').format('HH:mm')  %>",  //The data which is from Server is based on UTC, that's why +1 hour  
                   <% } %>
                   <% } %>
                    
