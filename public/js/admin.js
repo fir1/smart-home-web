@@ -266,8 +266,6 @@ const updateGraph = (from,to) => {
     var from_Utc = moment(from).tz(clientZone).utc().format(); //UTC time zone for Server as times saved in UTC mode in Database
     var to_Utc = moment(to).tz(clientZone).utc().format();
 
-  
-
     if(moment(from).format("YYYY-MM-DD") === moment().format('YYYY-MM-DD')){
         $("#dropdownMenuButton").html(moment(from).format("HH:mm")+' - '+ moment(to).format("HH:mm"));
         $("#ddropdownMenuButton").html("DAILY STATISTICS");
