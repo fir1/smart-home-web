@@ -44,10 +44,10 @@
                     <div>
                       <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                       <input type="hidden" value="<%= device._id %>" name="deviceId">
-
+                  
                       <input type="hidden" value="<%= device.name %>" name="deviceName">
                       <input type="text" class="basicDate" data-input
-                        value="<%= moment(device.startTime).isValid() === true ? moment(device.startTime).format('YYYY-MM-DD HH:mm') : '' %>"
+                        value="<%= moment(device.startTime).isValid() === true ? moment(device.startTime).tz(moment.tz.guess()).format('YYYY-MM-DD HH:mm') : '' %>"
                         name="startTime"> From </input>
 
                       <input type="text" class="basicDate" data-input

@@ -90,12 +90,12 @@ const setTime = (button) => {
 
     // The startTime should be valid DATE format and the time difference between the current time and the time that user sets should be greater than 0 minutes in short user can't setup time in the past
     if ((moment(startTime).diff(moment(), "minutes") >= 0 && moment(startTime).isValid())) {
-        let start = moment.tz(startTime, clientZone);
+        let start = moment.tz(startTime, clientZone).utc().format();
 
-        startTimeConvert = start.tz("Europe/London").format(); // converting the start time from the client region to the server region which is Europe/London
+       // startTimeConvert = start.tz("Europe/London").format(); // converting the start time from the client region to the server region which is Europe/London
         myKeyVals = {
             "deviceName": deviceName,
-            "startTime": startTimeConvert,
+            "startTime": start,
             "finishTime": finishTimeConvert,
             "typeDevice": typeDevice
         };
@@ -104,13 +104,12 @@ const setTime = (button) => {
 
     // The finishTime should be valid DATE format and the time difference between current time and the time that user sets should be greater than 0 minutes in short user can't setup time in the past
     if ((moment(finishTime).diff(moment(), "minutes") >= 0) && moment(finishTime).isValid()) {
-        let finish = moment.tz(finishTime, clientZone);
-
-        finishTimeConvert = finish.tz("Europe/London").format();
+        let finish = moment.tz(finishTime, clientZone).utc().format();
+       // finishTimeConvert = finish.tz("Europe/London").format();
         myKeyVals = {
             "deviceName": deviceName,
             "startTime": startTimeConvert,
-            "finishTime": finishTimeConvert,
+            "finishTime": finish,
             "typeDevice": typeDevice
         };
         isFinishTimeValid = true;
@@ -260,9 +259,15 @@ const postLogOut = () => {
 };
 
 const updateGraph = (from,to) => {
- 
+
     const csrf = $("input[name=_csrf]").val();
-   
+ 
+    var clientZone = moment.tz.guess();
+    var from_Utc = moment(from).tz(clientZone).utc().format(); //UTC time zone for Server as times saved in UTC mode in Database
+    var to_Utc = moment(to).tz(clientZone).utc().format();
+
+  
+
     if(moment(from).format("YYYY-MM-DD") === moment().format('YYYY-MM-DD')){
         $("#dropdownMenuButton").html(moment(from).format("HH:mm")+' - '+ moment(to).format("HH:mm"));
         $("#ddropdownMenuButton").html("DAILY STATISTICS");
@@ -275,8 +280,8 @@ const updateGraph = (from,to) => {
 
 
     let myKeyVals = {
-    "from": from,
-    "to": to
+    "from": from_Utc,
+    "to": to_Utc
     };
     
     $.ajaxSetup({
@@ -301,7 +306,7 @@ const updateGraph = (from,to) => {
     myChart.destroy();
     
          for(var a=0;a<received.length;a++){
-             dates[a]=moment(received[a].date).add(1,'hours').format('HH:mm');
+            dates[a]=moment(received[a].date).tz(clientZone).format('HH:mm');//Received date from Server which is UTC will be converted to the clients zone
              temps[a]=received[a].temperature;
              humidity[a]=received[a].humidity;
          }

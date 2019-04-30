@@ -380,10 +380,7 @@ exports.deleteDevice = (req, res, next) => {
     const serialNumber = req.serialNumber;
     var from = req.body.from;
     var to = req.body.to;
-
-        from = moment(from).subtract(1,'hours').format(); //Converting the User's time(UK Time) to the UTC
-        to = moment(to).subtract(1,'hours').format(); 
-
+     
     console.log(from);
     console.log(to);
 
