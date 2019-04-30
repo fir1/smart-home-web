@@ -146,12 +146,12 @@
                         </div>
                       </div>
                       <div class="dropdown">
-                        <button class="btn btn-secondary  dropdown-toggle" type="button" class="date" id="ddropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <button class="btn btn-secondary  dropdown-toggle" onclick="op()" type="button" class="date" id="ddropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                          Daily Statistics
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                          <a class="dropdown-item" href="#graph" onclick="updateGraph((moment().subtract(7,'days').format('YYYY-MM-DD')+'T00:00:00.000'),(moment().subtract(7,'days').format('YYYY-MM-DD')+'T24:00:00.000'))"><% moment().subtract(7,'days').format("YYYY-MM-DD") %></a>
+                          <a class="dropdown-item" href="#graph" onclick="updateGraph((moment().subtract(7,'days').format('YYYY-MM-DD')+'T00:00:00.000'),(moment().subtract(7,'days').format('YYYY-MM-DD')+'T24:00:00.000'))"><%= moment().subtract(7,'days').format("YYYY-MM-DD") %></a>
                           <a class="dropdown-item" href="#graph" onclick="updateGraph((moment().subtract(6,'days').format('YYYY-MM-DD')+'T00:00:00.000'),(moment().subtract(6,'days').format('YYYY-MM-DD')+'T24:00:00.000'))"><%= moment().subtract(6,'days').format("YYYY-MM-DD") %></a>
                           <a class="dropdown-item" href="#graph" onclick="updateGraph((moment().subtract(5,'days').format('YYYY-MM-DD')+'T00:00:00.000'),(moment().subtract(5,'days').format('YYYY-MM-DD')+'T24:00:00.000'))"><%= moment().subtract(5,'days').format("YYYY-MM-DD") %></a>
                           <a class="dropdown-item" href="#graph" onclick="updateGraph((moment().subtract(4,'days').format('YYYY-MM-DD')+'T00:00:00.000'),(moment().subtract(4,'days').format('YYYY-MM-DD')+'T24:00:00.000'))"><%= moment().subtract(4,'days').format("YYYY-MM-DD") %></a>
