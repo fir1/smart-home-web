@@ -1,4 +1,4 @@
-
+ 
 // Note: with each POST request they should be CSRF token included, otherwise the server will throw exception error.
  
 
@@ -259,25 +259,25 @@ const postLogOut = () => {
         });
 };
 
-const updateGraph = (timeOrDate) => {
-console.log(moment().format());
+const updateGraph = (from,to) => {
+ 
     const csrf = $("input[name=_csrf]").val();
- console.log(timeOrDate.length);
-    if(timeOrDate.length === 11){
-        $("#dropdownMenuButton").html(timeOrDate);
+   
+    if(moment(from).format("YYYY-MM-DD") === moment().format('YYYY-MM-DD')){
+        $("#dropdownMenuButton").html(moment(from).format("HH:mm")+' - '+ moment(to).format("HH:mm"));
         $("#ddropdownMenuButton").html("DAILY STATISTICS");
-       
     }
+
     else{
         $("#dropdownMenuButton").html("SELECT TIMES FOR TODAY");
-        $("#ddropdownMenuButton").html(timeOrDate);
+        $("#ddropdownMenuButton").html(moment(from).format("YYYY-MM-DD"));
     }
-  
+
+
     let myKeyVals = {
-    "selected": timeOrDate
+    "from": from,
+    "to": to
     };
-    
-    console.log(myKeyVals); 
     
     $.ajaxSetup({
     "beforeSend": function (xhr) {
@@ -291,7 +291,7 @@ console.log(moment().format());
        "data": myKeyVals
     })
     .then((dataReceived) => {
-       console.log(dataReceived.message);
+
        var received=dataReceived.message;
        
      var dates=[];
@@ -301,13 +301,11 @@ console.log(moment().format());
     myChart.destroy();
     
          for(var a=0;a<received.length;a++){
-             console.log(moment(received[a].date).format('HH:mm'));
-             dates[a]=moment(received[a].date).format('HH:mm');
+             dates[a]=moment(received[a].date).add(1,'hours').format('HH:mm');
              temps[a]=received[a].temperature;
              humidity[a]=received[a].humidity;
          }
-         console.log(dates);
-         console.log(temps);
+
          myChart = new Chart(ctx, {
            type: 'bar',
            data: {

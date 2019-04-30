@@ -378,32 +378,16 @@ exports.deleteDevice = (req, res, next) => {
   exports.postUpdateGraph = (req, res, next) => {
 
     const serialNumber = req.serialNumber;
-    const selectedTimeOrDate = req.body.selected;
-    var currentDate = moment().format("YYYY-MM-DD");
+    var from = req.body.from;
+    var to = req.body.to;
 
-    var start,end;
+        from = moment(from).subtract(1,'hours').format(); //Converting the User's time(UK Time) to the UTC
+        to = moment(to).subtract(1,'hours').format(); 
 
-    
-    if(selectedTimeOrDate === "07:00-12:00"){
-      start=currentDate+"T07:00:00.000";
-      end=currentDate+"T12:00:00.000";
-    }
-    else if(selectedTimeOrDate === "13:00-18:00"){
-      start=currentDate+"T13:00:00.000";
-      end=currentDate+"T18:00:00.000";
-    }
-    else if(selectedTimeOrDate === "19:00-24:00"){
-      start=currentDate+"T19:00:00.000";
-      end=currentDate+"T24:00:00.000";
-    }
-    else {
-      /*In case of the DATE was choosen then the statistics of temperature and humidity will be shown from start of the Day till the end
-      */
-      start = selectedTimeOrDate + "T00:00:00.000";
-      end = selectedTimeOrDate + "T23:59:59.000";
-    }
+    console.log(from);
+    console.log(to);
 
-    Temp.find({serialNumber: serialNumber, date: {$gte: start, $lt: end}})
+    Temp.find({serialNumber: serialNumber, date: {$gte: from, $lte: to}})
 .then(resultTemp=>{ 
   res.status(200).json({message: resultTemp });
   })

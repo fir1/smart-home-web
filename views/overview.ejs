@@ -139,9 +139,10 @@
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                          <a class="dropdown-item" href="#graph" onclick="updateGraph('07:00-12:00')">07:00 - 12:00</a>
-                          <a class="dropdown-item" href="#graph" onclick="updateGraph('13:00-18:00')">13:00 - 18:00</a>
-                          <a class="dropdown-item" href="#graph" onclick="updateGraph('19:00-24:00')">19:00 - 24:00</a>
+                            <a class="dropdown-item"  href="#graph" onclick="updateGraph(moment().format('YYYY-MM-DD')+'T00:00:00.000', moment().format('YYYY-MM-DD')+'T06:00:00.000' )">00:00 - 06:00</a>
+                          <a class="dropdown-item" href="#graph" onclick="updateGraph(moment().format('YYYY-MM-DD')+'T06:00:00.000', moment().format('YYYY-MM-DD')+'T12:00:00.000')">06:00 - 12:00</a>
+                          <a class="dropdown-item" href="#graph" onclick="updateGraph(moment().format('YYYY-MM-DD')+'T12:00:00.000', moment().format('YYYY-MM-DD')+'T18:00:00.000')">12:00 - 18:00</a>
+                          <a class="dropdown-item" href="#graph" onclick="updateGraph(moment().format('YYYY-MM-DD')+'T18:00:00.000', moment().format('YYYY-MM-DD')+'T24:00:00.000')">18:00 - 24:00</a>
                         </div>
                       </div>
                       <div class="dropdown">
@@ -150,13 +151,13 @@
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                          <a class="dropdown-item" href="#graph" onclick="updateGraph( '<%= moment().subtract(7,'days').format('YYYY-MM-DD') %>' )"><%= moment().subtract(7,'days').format("YYYY-MM-DD") %></a>
-                          <a class="dropdown-item" href="#graph" onclick="updateGraph( '<%= moment().subtract(6,'days').format('YYYY-MM-DD') %>' )"><%= moment().subtract(6,'days').format("YYYY-MM-DD") %></a>
-                          <a class="dropdown-item" href="#graph" onclick="updateGraph( '<%= moment().subtract(5,'days').format('YYYY-MM-DD') %>' )"><%= moment().subtract(5,'days').format("YYYY-MM-DD") %></a>
-                          <a class="dropdown-item" href="#graph" onclick="updateGraph( '<%= moment().subtract(4,'days').format('YYYY-MM-DD') %>' )"><%= moment().subtract(4,'days').format("YYYY-MM-DD") %></a>
-                          <a class="dropdown-item" href="#graph" onclick="updateGraph( '<%= moment().subtract(3,'days').format('YYYY-MM-DD') %>' )"><%= moment().subtract(3,'days').format("YYYY-MM-DD") %></a>
-                          <a class="dropdown-item" href="#graph" onclick="updateGraph( '<%= moment().subtract(2,'days').format('YYYY-MM-DD') %>' )"><%= moment().subtract(2,'days').format("YYYY-MM-DD") %></a>
-                          <a class="dropdown-item" href="#graph" onclick="updateGraph( '<%= moment().subtract(1,'days').format('YYYY-MM-DD') %>' )"><%= moment().subtract(1,'days').format("YYYY-MM-DD") %></a>
+                          <a class="dropdown-item" href="#graph" onclick="updateGraph((moment().subtract(7,'days').format('YYYY-MM-DD')+'T00:00:00.000'),(moment().subtract(7,'days').format('YYYY-MM-DD')+'T24:00:00.000'))"><%= moment().subtract(7,'days').format("YYYY-MM-DD") %></a>
+                          <a class="dropdown-item" href="#graph" onclick="updateGraph((moment().subtract(6,'days').format('YYYY-MM-DD')+'T00:00:00.000'),(moment().subtract(6,'days').format('YYYY-MM-DD')+'T24:00:00.000'))"><%= moment().subtract(6,'days').format("YYYY-MM-DD") %></a>
+                          <a class="dropdown-item" href="#graph" onclick="updateGraph((moment().subtract(5,'days').format('YYYY-MM-DD')+'T00:00:00.000'),(moment().subtract(5,'days').format('YYYY-MM-DD')+'T24:00:00.000'))"><%= moment().subtract(5,'days').format("YYYY-MM-DD") %></a>
+                          <a class="dropdown-item" href="#graph" onclick="updateGraph((moment().subtract(4,'days').format('YYYY-MM-DD')+'T00:00:00.000'),(moment().subtract(4,'days').format('YYYY-MM-DD')+'T24:00:00.000'))"><%= moment().subtract(4,'days').format("YYYY-MM-DD") %></a>
+                          <a class="dropdown-item" href="#graph" onclick="updateGraph((moment().subtract(3,'days').format('YYYY-MM-DD')+'T00:00:00.000'),(moment().subtract(3,'days').format('YYYY-MM-DD')+'T24:00:00.000'))"><%= moment().subtract(3,'days').format("YYYY-MM-DD") %></a>
+                          <a class="dropdown-item" href="#graph" onclick="updateGraph((moment().subtract(2,'days').format('YYYY-MM-DD')+'T00:00:00.000'),(moment().subtract(2,'days').format('YYYY-MM-DD')+'T24:00:00.000'))"><%= moment().subtract(2,'days').format("YYYY-MM-DD") %></a>
+                          <a class="dropdown-item" href="#graph" onclick="updateGraph((moment().subtract(1,'days').format('YYYY-MM-DD')+'T00:00:00.000'),(moment().subtract(1,'days').format('YYYY-MM-DD')+'T24:00:00.000'))"><%= moment().subtract(1,'days').format("YYYY-MM-DD") %></a>
                         </div>
                       </div>
                   <canvas id="myChart" id="bar-chart" width="800" height="420"></canvas>
@@ -191,7 +192,7 @@
                
                 <% if (thermo.length > 0) { %>
                   <% for (let temp of thermo) { %>
-                      "<%= moment(temp.date).add(1,'hours').format('HH:mm')  %>",    
+                      "<%= moment(temp.date).add(1,'hours').format('HH:mm')  %>",  //The data which is from Server is based on UTC, that's why +1 hour  
                   <% } %>
                   <% } %>
                    
