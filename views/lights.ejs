@@ -48,11 +48,11 @@
                       <input type="hidden" value="<%= device.name %>" name="deviceName">
                       <input type="text" class="basicDate" data-input
                         value="<%= moment(device.startTime).isValid() === true ? moment(device.startTime).add(1,'hours').format('YYYY-MM-DD HH:mm') : '' %>"
-                        name="startTime"> From </input>
+                        name="startTime"> On </input>
 
                       <input type="text" class="basicDate" data-input
                         value="<%= moment(device.finishTime).isValid() === true ? moment(device.finishTime).add(1,'hours').format('YYYY-MM-DD HH:mm'): '' %>"
-                        name="finishTime" style="margin-left: 40px;background-position: 20px;"> To </input>
+                        name="finishTime" style="margin-left: 40px;background-position: 20px;"> Off </input>
                       <button type="submit" onclick="setTime(this)"" class=" btn btn-success">Set time</button>
                     </div>
                   </div>
