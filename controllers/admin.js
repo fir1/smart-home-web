@@ -243,12 +243,12 @@ exports.postSetTime = (req, res, next) => {
 
 exports.postStateChange = (req, res, next) => {
 
-  const deviceId = req.params.deviceId; // will pull deviceId from the URL path of request
+  const deviceId = req.params.deviceId; // will pull deviceId from the URL path of client request
   const state = req.body.state;
   const typeDevice = req.body.typeDevice;
 
   /**
- * Finds the device from the collection that is belongs to the user which is authenticated
+ * Finds the device by id from the collection that belongs to the user which is authenticated
  * and change state of the devices, such as On or Off
  */
   const update = {
@@ -302,6 +302,7 @@ exports.postStateChangeAll = (req, res, next) => {
         message: 'Successfully states changed in Server'
       }); //in here don't redirect but send status code of 200 to the browser and respond with some json
 
+      //In case of the door have been open, then send the email to the user
       if(typeDevice==="door" && state==="On"){
         transporter.sendMail({    
              to: req.session.user.email,          //the user's email which was found from DB the one who did request for password Reset 

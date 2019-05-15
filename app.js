@@ -31,6 +31,9 @@ app.use(sslRedirect());
 
 const PORT = process.env.PORT || 5000;
 
+/**
+ * For saving the authenticated sessions in the database
+ */
 const store = new MongoDBStore({
   uri: MONGODB_URI,
   collection: 'sessions'
@@ -62,7 +65,7 @@ app.use(csrfProtection);
 //it is possible to use flash() middleware anywhere in application's request object
 app.use(flash()); //this required in order to sent error messages to the front end this should be declared after session
 
-//The below middleware to respond CSRF tokens to view. For every request that will come this 2 variables will be available 
+//The below middleware to respond CSRF tokens to view. For every request that will come this 3 variables will be available 
 app.use((req, res, next) => {
   res.locals.isAuthenticated = req.session.isLoggedIn,
     res.locals.isEmailConfirmed = req.session.isEmailConfirmed,
@@ -95,7 +98,10 @@ mongoose
   .connect(MONGODB_URI)
   .then(result => {
     console.log("Connected to the database");
-
+/**
+ * The CronJob will run every 1 minute in order, to check the time scheduling of the devices from the collection
+ * if their time matches the current time then the state of device will be changed to the On or Off
+ */
     var CronJob = require('cron').CronJob;
     new CronJob('* * * * *', function () { //the function will run every minute
       const currentDateTime = moment.tz("Europe/London").format(); //setting up the server time zone as London 
@@ -126,17 +132,14 @@ mongoose
         });
 
         var aWeekAgo = moment().subtract(8,'days');  
+
         //On database collection only last 1 week of information will be kept regarding the Temperatures if it is longer then one week delete it
     Temp.deleteMany({date: {$lte: aWeekAgo}}, function (err) {
       if (err) return handleError(err);
     });
     }, null, true);
 
-    
-
-    // app.listen(3000,'0.0.0.0'); //'0.0.0.0' means you can connect to website from any device which is connected to the same router 
-    //                             // if you want to access it be sure that you will access by knowing IP address of laptop ipconfig in command prompt
-    app.listen(PORT);
+      app.listen(PORT);
   })
   .catch(err => {
     console.log(err);

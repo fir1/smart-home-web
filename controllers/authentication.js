@@ -11,6 +11,7 @@ const transporter = nodemailer.createTransport(sendGrid({      //nodemailer will
  }
 })); 
 
+//Render the Login page to the client
 exports.getLogin = (req, res, next) => {
   let messageError = req.flash('error'); //the error is the key whatever stored in the key error will be shown in here
   if(messageError.length > 0){
@@ -26,6 +27,7 @@ exports.getLogin = (req, res, next) => {
   });
 };
 
+//Render the Signup page to the client
 exports.getSignup = (req, res, next) => {
   let messageError = req.flash('error'); //the error is the key whatever stored in the key error will be shown in here
   if(messageError.length > 0){
@@ -70,7 +72,7 @@ exports.getEmailConfirmation = (req,res,next) =>{
   })
 };
 
-
+//The Reset password page will be rendered to the client
 exports.getResetPassword = (req,res,next) => {
   let messageError = req.flash('error'); //the error is the key whatever stored in the key error will be shown in here
   if(messageError.length > 0){
@@ -131,37 +133,35 @@ exports.postLogin = (req, res, next) => {
   request(verifyUrl, (err, response, body) => {
     body = JSON.parse(body);
     
-    // If Not Successful
+    // If the Captcha isn't selected or incorrect pictures selected
     if(body.success !== undefined && !body.success){
       req.flash('error','Failed captcha verification');
-    //  return  res.status(200).json({"success": false, "msg":"Failed captcha verification","link": "/login"});
       return res.redirect('/login');
   }
  
     User.findOne({ email: email })
     .then(user => {
+
+       //if the email does not exist in database then redirect to the login page
       if (!user) {
         req.flash('error','Invalid email or password.');
-        //if the email does not exist in database then redirect to the login page
         return res.redirect('/login');
-     //   return  res.status(200).json({"link": "/login","success": true, "msg":"Passed captcha verification"});
       }
       bcrypt
         .compare(password, user.password) //the encrypted password from database will be checked with the password that user entered it will return true or false
         .then(doMatch => {
+          //In case of passwords match then initiallize the session and redirect to the dashboard
           if (doMatch) {
             req.session.isLoggedIn = true;
             req.session.user = user;
             return req.session.save(err => {
               console.log(err);
            return  res.redirect('/overview');
-          // return  res.status(200).json({"link": "/overview","success": true, "msg":"Passed captcha verification"});
             });
           }
           
           req.flash('error','Invalid email or password.');
           return res.redirect('/login');
-        //  return  res.status(200).json({"link": "/login","success": false, "msg":"Passed captcha verification"});
         })
     })
   });
@@ -186,7 +186,7 @@ exports.postSignup = (req, res, next) => {
   request(verifyUrl, (err, response, body) => {
     body = JSON.parse(body);
     
-    // If Not Successful
+    // If the Captcha isn't selected or incorrect pictures selected
     if(body.success !== undefined && !body.success){
       req.flash('error','Failed captcha verification');
     //  return  res.status(200).json({"success": false, "msg":"Failed captcha verification","link": "/login"});
