@@ -88,7 +88,7 @@ const setTime = (button) => {
     });
 
     let clientZone = moment.tz.guess(), // will take the region of the user from browser, such as based on the time and date of PC or Mobile Phone
-        startTimeConvert, finishTimeConvert, myKeyVals,
+        start, finish, myKeyVals,
         isStartTimeValid = false,
         isFinishTimeValid = false;
 
@@ -96,13 +96,13 @@ const setTime = (button) => {
 
     // The startTime should be valid DATE format and the time difference between the current time and the time that user sets should be greater than 0 minutes in short user can't setup time in the past
     if ((moment(startTime).diff(moment(), "minutes") >= 0 && moment(startTime).isValid())) {
-        let start = moment.tz(startTime, clientZone).utc().format();
+         start = moment.tz(startTime, clientZone).utc().format();
 
        // startTimeConvert = start.tz("Europe/London").format(); // converting the start time from the client region to the server region which is Europe/London
         myKeyVals = {
             "deviceName": deviceName,
             "startTime": start,
-            "finishTime": finishTimeConvert,
+            "finishTime": finish,
             "typeDevice": typeDevice
         };
         isStartTimeValid = true;
@@ -110,11 +110,11 @@ const setTime = (button) => {
 
     // The finishTime should be valid DATE format and the time difference between current time and the time that user sets should be greater than 0 minutes in short user can't setup time in the past
     if ((moment(finishTime).diff(moment(), "minutes") >= 0) && moment(finishTime).isValid()) {
-        let finish = moment.tz(finishTime, clientZone).utc().format();
+         finish = moment.tz(finishTime, clientZone).utc().format();
        // finishTimeConvert = finish.tz("Europe/London").format();
         myKeyVals = {
             "deviceName": deviceName,
-            "startTime": startTimeConvert,
+            "startTime": start,
             "finishTime": finish,
             "typeDevice": typeDevice
         };
