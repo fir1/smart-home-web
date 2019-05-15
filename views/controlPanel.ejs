@@ -124,9 +124,9 @@
            
                       
                           <div class="col-lg-6 col-md-9 col-sm-9">
+                              <div id="errorMessage"></div>
                               <div class="card card-stats">
                                 <div class="card-header card-header-info card-header-icon">
-                                  
                                   <h3 class="card-title">Username
                                             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                                             <i class="material-icons">person</i>
@@ -141,7 +141,6 @@
                     <form onsubmit="return validateUpdatePassword()" method="POST" action="/update-password" >                    <div class="col-lg-6 col-md-9 col-sm-9">
                         <div class="card card-stats">
                           <div class="card-header card-header-info card-header-icon">
-                              <div id="errorMessage"></div>
                               <% if (errorMessage) {%>
                                 <div class="user-message user-message--error"><%= errorMessage %></div>
                                 <% } %>

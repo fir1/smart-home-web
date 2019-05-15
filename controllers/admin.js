@@ -14,7 +14,7 @@ const transporter = nodemailer.createTransport(sendGrid({      //nodemailer will
   }
  })); 
 
-
+//The below will send Overview page to the client
 exports.getOverview = (req, res, next) => {
   const userId = req.user;
   const serialNumber = req.serialNumber;
@@ -22,6 +22,11 @@ exports.getOverview = (req, res, next) => {
 var start = moment().subtract(6,'hours');// only show the lattest 6 hours temp/humidity from current time
 var end = moment();// shows the current time
 
+/**
+ * Find all the devices from the collection that is belongs to the user which is authenticated
+ * Also, find the temp./humidity of the room for the last 6 hours from the current time and respond those data's
+ * to the client
+ */
   Device.find({userId})
     .then(devices => {
       Temp.find({serialNumber: serialNumber, date: {$gte: start, $lt: end}})// only show the lattest 6 hours temp/humidity from current time
@@ -38,12 +43,15 @@ var end = moment();// shows the current time
   }); 
 };
 
-
+//The below will send Light page to the client
 exports.getLight = (req, res, next) => {
 
   const userId = req.user;
   const typeDevice = "light";
 
+/**
+ * Find all the light devices from the collection that is belongs to the user which is authenticated
+ */
   var query = {
     userId,
     typeDevice
@@ -60,12 +68,15 @@ exports.getLight = (req, res, next) => {
     })
 };
 
-
+//The below will send Plug page to the client
 exports.getPlug = (req, res, next) => {
 
   const userId = req.user;
   const typeDevice = "plug";
 
+/**
+ * Find all the plug devices from the collection that is belongs to the user which is authenticated
+ */
   var query = {
     userId,
     typeDevice
@@ -87,6 +98,10 @@ exports.getDoor = (req, res, next) => {
 
   const userId = req.user;
   const typeDevice = "door";
+
+  /**
+ * Find all the Door devices from the collection that is belongs to the user which is authenticated
+ */
   var query = {
     userId,
     typeDevice
@@ -109,6 +124,10 @@ exports.getAirConditioner = (req, res, next) => {
 
   const userId = req.user;
   const typeDevice = "ac";
+
+  /**
+ * Find all the AC devices from the collection that is belongs to the user which is authenticated
+ */
   var query = {
     userId,
     typeDevice
@@ -142,13 +161,14 @@ exports.getControlPanel = (req, res, next) => {
   });
 };
 
-
+//The below will add device based on the client request
 exports.postAddDevice = (req, res, next) => {
-  const userId = req.user; //the user will be request from app.js
+  const userId = req.user; //the user will be requested from app.js
   const serialNumber = req.serialNumber;
   const name = req.body.deviceName; //req.body used in order to pull data from the front end HTML
   const typeDevice = req.body.typeDevice;
 
+  //Creating new Device according to the schema that is provided in models folder
   var device = new Device({
     userId: userId,
     serialNumber: serialNumber,
@@ -158,18 +178,47 @@ exports.postAddDevice = (req, res, next) => {
     finishTime: '',
     typeDevice: typeDevice
   });
-  device.save()
-    .then(result => {
-      res.status(200).json({
-        message: 'Successfully added device in Server'
-      }); //in here don't redirect but send status code of 200 to the browser and respond with some json
-    })
-    .catch(err => {
-      console.log(err);
-    });
+  
+  Device.findOne({ userId: userId, name: name, typeDevice: typeDevice })
+  .then(name => {
+    //the name of device must not be same as the existing type of Device
+    if (!name) { 
+      /*return it so it won't respond second time to the client if
+      responding twice will cause an error in the server  */
+      return device.save()  
+      .then(result => {
+        return res.status(200).json({
+          message: 'Successfully added'
+        }); //in here don't redirect but send status code of 200 to the browser and respond with some json
+       
+      })
+      .catch(err => {
+        console.log(err);
+      });
+    }
+
+     return res.status(200).json({message:"The name of the device can not be same as existing device"});
+  })
 };
 
 
+//The below will respond to the client with the temperature and humidity data
+exports.postUpdateGraph = (req, res, next) => {
+
+  const serialNumber = req.serialNumber;
+  var from = req.body.from;
+  var to = req.body.to;
+
+  Temp.find({serialNumber: serialNumber, date: {$gte: from, $lte: to}})
+.then(resultTemp=>{ 
+res.status(200).json({message: resultTemp });
+})
+};
+
+
+/**
+ * Will set time for the device
+ */
 exports.postSetTime = (req, res, next) => {
 
   const deviceId = req.params.deviceId; // will pull deviceId from the URL path of request
@@ -198,6 +247,10 @@ exports.postStateChange = (req, res, next) => {
   const state = req.body.state;
   const typeDevice = req.body.typeDevice;
 
+  /**
+ * Finds the device from the collection that is belongs to the user which is authenticated
+ * and change state of the devices, such as On or Off
+ */
   const update = {
     state
   };
@@ -226,7 +279,9 @@ exports.postStateChange = (req, res, next) => {
     });
 };
 
-
+/**
+ * Change the state of all the devices which belongs to the specific type of device, such as, Light, Plug
+ */
 exports.postStateChangeAll = (req, res, next) => {
 
   const userId = req.user;
@@ -264,7 +319,9 @@ exports.postStateChangeAll = (req, res, next) => {
     });
 };
 
-
+/**
+ * Update the username of authenticated user
+ */
 exports.postUpdateUsername = (req, res, next) => {
 
   const userId = req.user;
@@ -372,22 +429,5 @@ exports.deleteDevice = (req, res, next) => {
     });
 };
 
-
-
-
-  exports.postUpdateGraph = (req, res, next) => {
-
-    const serialNumber = req.serialNumber;
-    var from = req.body.from;
-    var to = req.body.to;
-     
-    console.log(from);
-    console.log(to);
-
-    Temp.find({serialNumber: serialNumber, date: {$gte: from, $lte: to}})
-.then(resultTemp=>{ 
-  res.status(200).json({message: resultTemp });
-  })
-  };
 
   

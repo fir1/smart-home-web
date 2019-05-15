@@ -1,11 +1,15 @@
-const path = require('path');
 const express = require('express');
 const adminControl=require('../controllers/admin');
 const isAuth = require('../middleware/is-auth');
 
 const router = express.Router();
 
-router.get('/overview',isAuth,adminControl.getOverview); //the get request will be step by step /overview will be request then check isAuth if it is then getOveview route
+/**
+ * All the routes for the authenticated users can be found in the below.
+ * Any request that front end sends to the server will be served based on the below routes and controllers
+ */
+
+router.get('/overview',isAuth,adminControl.getOverview); //the get request will be step by step /overview will be request then check isAuth if it is authenticated then getOveview route
 
 router.get('/lights',isAuth,adminControl.getLight);
 

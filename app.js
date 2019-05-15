@@ -27,9 +27,7 @@ This is required for the production purposes.
 */
  // enable ssl redirect 
 app.use(sslRedirect());
-// app.use(sslRedirect([
-//   'development'
-//   ]));
+
 
 const PORT = process.env.PORT || 5000;
 
@@ -93,8 +91,6 @@ app.use(adminRoutes);
 app.use(authRoutes);
 
 
-
-
 mongoose
   .connect(MONGODB_URI)
   .then(result => {
@@ -130,10 +126,9 @@ mongoose
         });
 
         var aWeekAgo = moment().subtract(8,'days');  
-        //On database collection only 1 week of information will be kept regarding the Temperatures if it is longer then one week delete it
+        //On database collection only last 1 week of information will be kept regarding the Temperatures if it is longer then one week delete it
     Temp.deleteMany({date: {$lte: aWeekAgo}}, function (err) {
       if (err) return handleError(err);
-      // deleted at most one tank document
     });
     }, null, true);
 

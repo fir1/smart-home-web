@@ -4,7 +4,7 @@
   "description": "The Smart Home web application to controll the home appliances",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha",
     "start": "nodemon app.js"
   },
   "repository": {
@@ -16,7 +16,7 @@
   "bugs": {
     "url": ""
   },
-  "homepage": "",
+  "homepage": "https://www.smart-homes.me/",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "connect-flash": "^0.1.1",

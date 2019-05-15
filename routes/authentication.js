@@ -4,6 +4,11 @@ const authController = require('../controllers/authentication');
 
 const router = express.Router();
 
+/**
+ * All the routes for the authentication, such as, login, registering, passwordReset can be found in the below.
+ * Any request that front end sends to the server will be served based on the below routes and controllers
+ */
+
 router.get('/', authController.getLogin);
 
 router.get('/login', authController.getLogin);

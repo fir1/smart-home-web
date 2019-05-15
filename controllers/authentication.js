@@ -61,7 +61,7 @@ exports.getEmailConfirmation = (req,res,next) =>{
     path: '/confirmEmail',
     pageTitle: 'Confirm Email',
     errorMessage: messageError,
-    userId: user._id.toString(),                      //userId required in order to include to the POST request where the password will be updated
+    userId: user._id.toString(),   //userId required in order to include to the POST request where the password will be updated
     emailConfirmationToken: token
   })
   })
@@ -232,7 +232,7 @@ exports.postSignup = (req, res, next) => {
               <p>Click this <a href="https://www.smart-homes.me/confirmEmail/${token}">link</a> in order to confirm your email</p>
               <p>Note: This link will expiry in 1:30 hour.</p>
         `
-                                                                          //${} will able to inject variables and values inside of {}
+      //${} will able to inject variables and values inside of {}
     }); 
 
     })

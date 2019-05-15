@@ -1,5 +1,5 @@
 const mongoose = require ('mongoose');
-
+//The schema for the temp/humidity in order to save in DB
 const Schema = mongoose.Schema;
 
 const tempSchema = new Schema (

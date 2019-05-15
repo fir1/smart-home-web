@@ -53,8 +53,14 @@ const addDevice = (button) => {
             })
             .then((data) => {
                 console.log(data.message);
+                if(data.message === 'Successfully added'){
                 // after adding device reload the page so it will be retrieved from the database
                 window.location.reload();
+                }
+                else{
+                    $('#errorMessage').addClass("user-message user-message--error");
+                    $('#errorMessage').append('<p class="message">The name of the device can not be same as existing device</p>').show();
+                }
 
             });
     } else {
