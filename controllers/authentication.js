@@ -7,7 +7,7 @@ const request = require('request');
 
 const transporter = nodemailer.createTransport(sendGrid({      //nodemailer will use the service of sendgrid to send emails
  auth:{
-   api_key: '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'
+   api_key: 'SECRET'
  }
 })); 
 
@@ -125,7 +125,7 @@ exports.postLogin = (req, res, next) => {
   const captcha = req.body['g-recaptcha-response']; //recaptcha values from the front end will be retrieved
 
   // Secret Key
-  const secretKey = '6LeT85gUAAAAALx3ngBnZxbzXOC5_ffg2bsCDj0V';
+  const secretKey = 'SECRET';
 
   // Verify URL
   const verifyUrl = `https://google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${captcha}&remoteip=${req.connection.remoteAddress}`;
@@ -177,7 +177,7 @@ exports.postSignup = (req, res, next) => {
   const captcha = req.body['g-recaptcha-response']; //recaptcha values from the front end will be retrieved
 
   // Secret Key
-  const secretKey = '6LeT85gUAAAAALx3ngBnZxbzXOC5_ffg2bsCDj0V';
+  const secretKey = 'SECRET';
 
   // Verify URL
   const verifyUrl = `https://google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${captcha}&remoteip=${req.connection.remoteAddress}`;
@@ -282,7 +282,7 @@ exports.postResetPassword = (req,res,next) => {
   const captcha = req.body['g-recaptcha-response']; //recaptcha values from the front end will be retrieved
 
   // Secret Key
-  const secretKey = '6LeT85gUAAAAALx3ngBnZxbzXOC5_ffg2bsCDj0V';
+  const secretKey = 'SECRET';
 
   // Verify URL
   const verifyUrl = `https://google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${captcha}&remoteip=${req.connection.remoteAddress}`;

@@ -10,7 +10,7 @@ const sendGrid = require ('nodemailer-sendgrid-transport') //sendgrid is the 3rd
 
 const transporter = nodemailer.createTransport(sendGrid({      //nodemailer will use the service of sendgrid to send emails
   auth:{
-    api_key: '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'
+    api_key: 'SECRET'
   }
  })); 
 

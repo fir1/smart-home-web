@@ -17,7 +17,7 @@ const sslRedirect = require('heroku-ssl-redirect');
 
 
 const MONGODB_URI =
-  'mongodb+srv://smarthome:JuMzsDoiDo0sv1IT@smarthome-ogiob.mongodb.net/device?retryWrites=true';
+'SECRET';
 
 const app = express();
 
